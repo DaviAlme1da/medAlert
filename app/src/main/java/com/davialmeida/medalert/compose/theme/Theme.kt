@@ -1,6 +1,5 @@
-package com.davialmeida.medalert.ui.theme
+package com.davialmeida.medalert.compose.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -12,25 +11,48 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Blue,
-    secondary = Blue,
-    tertiary = Blue
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Blue,
-    secondary = Blue,
-    tertiary = Blue
+    primary = PrimaryBlue,
+    onPrimary = SurfaceWhite,
+    primaryContainer = PrimaryTint,
+    onPrimaryContainer = PrimaryBlue,
 
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    secondary = SecondaryGreen,
+    onSecondary = SurfaceWhite,
+    secondaryContainer = PrimaryTint,
+    onSecondaryContainer = PrimaryBlue,
+
+    tertiary = WarningAmber,
+    onTertiary = TextPrimary,
+    tertiaryContainer = WarningContainer,
+    onTertiaryContainer = WarningOnContainer,
+
+    background = BackgroundOffWhite,
+    onBackground = TextPrimary,
+
+    surface = SurfaceWhite,
+    onSurface = TextPrimary,
+    surfaceVariant = BorderLight,
+    onSurfaceVariant = TextSecondary,
+
+    surfaceContainerLowest = SurfaceWhite,
+    surfaceContainerLow = SurfaceWhite,
+    surfaceContainer = SurfaceWhite,
+    surfaceContainerHigh = SurfaceWhite,
+    surfaceContainerHighest = SurfaceWhite,
+
+    outline = BorderStrong,
+    outlineVariant = BorderLight,
+
+    error = ErrorRed,
+    onError = SurfaceWhite,
+    errorContainer = ErrorContainer,
+    onErrorContainer = ErrorOnContainer,
+
+    inverseSurface = TextPrimary,
+    inverseOnSurface = SurfaceWhite
 )
 
 @Composable
