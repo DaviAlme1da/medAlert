@@ -22,4 +22,8 @@
     <!-- Empty states -->
     <string name="empty_medications_title">Nenhum medicamento</string>
     <string name="empty_medications_message">Você ainda não cadastrou nenhum medicamento.</string>
+    <string name="nav_history">Historico</string>
+    <string name="nav_medications">Medicamentos</string>
+    <string name="nav_settings">configurações</string>
+    <string name="nav_today">Hoje</string>
 </resources>
