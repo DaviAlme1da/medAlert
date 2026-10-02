@@ -4,7 +4,9 @@ enum class Screen(val route: String) {
 
     MAIN("main"),
     TODAY("today"),
-    MEDICATIONS("medications"),
+    MEDICATIONS(
+        "medications"),
     HISTORY("history"),
+
     SETTINGS("settings"),
 }

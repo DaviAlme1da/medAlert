@@ -15,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -26,6 +27,29 @@ import com.davialmeida.medalert.medication.presentation.MedicationsScreen
 import com.davialmeida.medalert.settings.presentation.SettingsScreen
 import com.davialmeida.medalert.today.presentation.TodayScreen
 
+private val bottomBarItems = listOf(
+    BottomBarItem(
+        screen = Screen.TODAY,
+        labelRes = R.string.nav_today,
+        iconRes = R.drawable.ic_nav_today,
+    ),
+    BottomBarItem(
+        screen = Screen.MEDICATIONS,
+        labelRes = R.string.nav_medications,
+        iconRes = R.drawable.ic_nav_medications,
+    ),
+    BottomBarItem(
+        screen = Screen.HISTORY,
+        labelRes = R.string.nav_history,
+        iconRes = R.drawable.ic_nav_history,
+    ),
+    BottomBarItem(
+        screen = Screen.SETTINGS,
+        labelRes = R.string.nav_settings,
+        iconRes = R.drawable.ic_nav_settings,
+    ),
+)
+
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
@@ -35,28 +59,7 @@ fun MainScreen(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    val bottomBarItems = listOf(
-        BottomBarItem(
-            screen = Screen.TODAY,
-            labelRes = R.string.nav_today,
-            iconRes = R.drawable.ic_nav_today,
-        ),
-        BottomBarItem(
-            screen = Screen.MEDICATIONS,
-            labelRes = R.string.nav_medications,
-            iconRes = R.drawable.ic_nav_medications,
-        ),
-        BottomBarItem(
-            screen = Screen.HISTORY,
-            labelRes = R.string.nav_history,
-            iconRes = R.drawable.ic_nav_history,
-        ),
-        BottomBarItem(
-            screen = Screen.SETTINGS,
-            labelRes = R.string.nav_settings,
-            iconRes = R.drawable.ic_nav_settings,
-        ),
-    )
+
 
     Scaffold(
         modifier = modifier,
@@ -75,7 +78,7 @@ fun MainScreen(
                             navController.navigate(item.screen.route) {
                                 launchSingleTop = true
 
-                                popUpTo(Screen.TODAY.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }
 
