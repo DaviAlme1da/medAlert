@@ -1,3 +1,25 @@
 <resources>
+
     <string name="app_name">MedAlert</string>
+
+    <!-- Actions -->
+    <string name="action_taken">Tomei</string>
+    <string name="add_medication">Adicionar medicamento</string>
+
+    <!-- Dose status -->
+    <string name="status_pending">Pendente</string>
+    <string name="status_taken">Tomada</string>
+    <string name="status_skipped">Pulada</string>
+    <string name="status_late">Atrasada</string>
+
+    <!-- Medication -->
+    <string name="next_dose">Próxima dose: %1$s</string>
+
+    <!-- Time -->
+    <string name="time">Horário</string>
+    <string name="select_time">Selecionar horário</string>
+
+    <!-- Empty states -->
+    <string name="empty_medications_title">Nenhum medicamento</string>
+    <string name="empty_medications_message">Você ainda não cadastrou nenhum medicamento.</string>
 </resources>
