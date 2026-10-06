@@ -5,6 +5,9 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
 
 android {
     namespace = "com.davialmeida.medalert"
@@ -17,6 +20,7 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
@@ -48,8 +52,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
 
