@@ -1,25 +1,15 @@
 <resources>
 
     <string name="app_name">MedAlert</string>
-
-    <!-- Actions -->
     <string name="action_taken">Tomei</string>
     <string name="add_medication">Adicionar medicamento</string>
-
-    <!-- Dose status -->
     <string name="status_pending">Pendente</string>
     <string name="status_taken">Tomada</string>
     <string name="status_skipped">Pulada</string>
     <string name="status_late">Atrasada</string>
-
-    <!-- Medication -->
     <string name="next_dose">Próxima dose: %1$s</string>
-
-    <!-- Time -->
     <string name="time">Horário</string>
     <string name="select_time">Selecionar horário</string>
-
-    <!-- Empty states -->
     <string name="empty_medications_title">Nenhum medicamento</string>
     <string name="empty_medications_message">Você ainda não cadastrou nenhum medicamento.</string>
     <string name="nav_history">Histórico</string>
@@ -28,4 +18,39 @@
     <string name="nav_today">Hoje</string>
     <string name="error_field_required">Campo obrigatório</string>
     <string name="error_min_length">Mínimo de %1$d caracteres</string>
+    <string name="profile_create_title">Novo perfil</string>
+    <string name="profile_name_label">Nome</string>
+    <string name="profile_name_empty">Digite um nome.</string>
+    <string name="profile_name_too_short">O nome deve ter pelo menos 3 caracteres.</string>
+    <string name="profile_name_too_long">O nome deve ter no máximo 30 caracteres.</string>
+    <string name="profile_cannot_delete_last">Não é possível excluir o último perfil.</string>
+    <string name="profile_not_found">Perfil não encontrado.</string>
+    <string name="profile_color_label">Cor do perfil</string>
+    <string name="profile_color_blue">Azul</string>
+    <string name="profile_color_green">Verde</string>
+    <string name="profile_color_purple">Roxo</string>
+    <string name="profile_create_button">Criar perfil</string>
+    <string name="profile_edit_title">Editar perfil</string>
+    <string name="profile_save_button">Salvar alterações</string>
+    <string name="profile_delete_title">Excluir perfil</string>
+    <string name="profile_delete_message">Tem certeza que deseja excluir este perfil? Os medicamentos e histórico relacionados a ele também serão excluídos.</string>
+    <string name="profile_delete_cancel">Cancelar</string>
+    <string name="profile_delete_confirm">Excluir</string>
+    <string name="profile_screen_title">Perfis</string>
+    <string name="profile_add_button">Adicionar perfil</string>
+    <string name="profile_active">Perfil ativo</string>
+    <string name="profile_edit_button">Editar</string>
+    <string name="profile_delete_button">Excluir</string>
+    <string name="profile_error_dismiss">Fechar</string>
+    <string name="profile_default_name">Meu Perfil</string>
+    <string name="profile_empty_message">Você ainda não tem perfis cadastrados. Adicione um perfil para começar.</string>
+    <string name="profile_empty_title">Nenhum perfil cadastrado</string>
+    <string name="profile_unexpected_error">Ocorreu um erro inesperado. Tente novamente.</string>
+    <string name="startup_error">Não foi possível inicializar o aplicativo.</string>
+    <string name="retry">Tentar novamente</string>
+    <string name="navigation_back">Voltar</string>
+    <string name="settings_profiles">Perfis</string>
+    <string name="profile_edit_description">Editar perfil %1$s</string>
+    <string name="profile_delete_description">Excluir perfil %1$s</string>
+    <string name="profile_delete_failed">Não foi possível excluir o perfil. Tente novamente.</string>
 </resources>
