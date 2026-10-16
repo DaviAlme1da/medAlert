@@ -52,14 +52,13 @@ private val bottomBarItems = listOf(
 
 @Composable
 fun MainScreen(
+    onOpenProfiles: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val navController = rememberNavController()
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-
-
 
     Scaffold(
         modifier = modifier,
@@ -92,9 +91,7 @@ fun MainScreen(
                             )
                         },
                         label = {
-                            Text(
-                                text = stringResource(item.labelRes),
-                            )
+                            Text(text = stringResource(item.labelRes))
                         },
                     )
                 }
@@ -119,7 +116,7 @@ fun MainScreen(
             }
 
             composable(Screen.SETTINGS.route) {
-                SettingsScreen()
+                SettingsScreen(onProfilesClick = onOpenProfiles)
             }
         }
     }
@@ -135,6 +132,6 @@ private data class BottomBarItem(
 @Composable
 private fun MainScreenPreview() {
     MedAlertTheme {
-        MainScreen()
+        MainScreen(onOpenProfiles = {})
     }
 }
