@@ -4,6 +4,7 @@ import java.time.LocalDate
 
 data class Medication(
     val id: Long,
+    val seriesId: Long = 0,
     val profileId: Long,
     val name: String,
     val dosage: Dosage,
