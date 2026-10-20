@@ -53,4 +53,159 @@
     <string name="profile_edit_description">Editar perfil %1$s</string>
     <string name="profile_delete_description">Excluir perfil %1$s</string>
     <string name="profile_delete_failed">Não foi possível excluir o perfil. Tente novamente.</string>
+    <plurals name="frequency_daily_summary">
+        <item quantity="one">%d vez ao dia</item>
+        <item quantity="other">%d vezes ao dia</item>
+    </plurals>
+
+    <plurals name="frequency_specific_days_summary">
+        <item quantity="one">%1$s · %2$d vez ao dia</item>
+        <item quantity="other">%1$s · %2$d vezes ao dia</item>
+    </plurals>
+
+    <plurals name="frequency_every_x_hours_summary">
+        <item quantity="one">A cada %d hora</item>
+        <item quantity="other">A cada %d horas</item>
+    </plurals>
+    <string name="weekday_monday_short">seg</string>
+    <string name="weekday_tuesday_short">ter</string>
+    <string name="weekday_wednesday_short">qua</string>
+    <string name="weekday_thursday_short">qui</string>
+    <string name="weekday_friday_short">sex</string>
+    <string name="weekday_saturday_short">sáb</string>
+    <string name="weekday_sunday_short">dom</string>
+    <string name="medications_tab_active">Ativos</string>
+    <string name="medications_tab_paused">Pausados</string>
+    <string name="medications_empty_active">Nenhum medicamento ativo no momento.</string>
+    <string name="medications_empty_paused">Nenhum medicamento pausado.</string>
+
+
+    <string name="medication_detail_title">Detalhes do medicamento</string>
+    <string name="medication_detail_load_error">Não foi possível carregar os detalhes deste medicamento.</string>
+    <string name="medication_detail_dosage">Dosagem</string>
+    <string name="medication_detail_form">Forma</string>
+    <string name="medication_detail_frequency">Frequência</string>
+    <string name="medication_detail_start_date">Data de início</string>
+    <string name="medication_detail_end_date">Data de término</string>
+    <string name="medication_detail_no_end_date">Sem data de término</string>
+    <string name="medication_detail_reminders">Lembretes</string>
+    <string name="medication_detail_notes">Observações</string>
+    <string name="medication_detail_edit">Editar medicamento</string>
+    <string name="action_back">Voltar</string>
+    <string name="action_try_again">Tentar novamente</string>
+    <string name="common_enabled">Ativados</string>
+    <string name="common_disabled">Desativados</string>
+    <string name="medication_form_tablet">Comprimido</string>
+    <string name="medication_form_capsule">Cápsula</string>
+    <string name="medication_form_drops">Gotas</string>
+    <string name="medication_form_liquid">Líquido</string>
+    <string name="medication_form_injection">Injeção</string>
+    <string name="medication_form_ointment">Pomada</string>
+    <string name="medication_form_other">Outro</string>
+    <string name="edit_medication_title">Editar medicamento</string>
+    <string name="edit_medication_series_id">ID da série: %1$d</string>
+    <string name="edit_medication_placeholder">A tela de edição será implementada na próxima etapa.</string>
+    <string name="medication_edit_title">Editar medicamento</string>
+    <string name="medication_edit_load_error">Não foi possível carregar o medicamento.</string>
+
+
+
+
+
+    <!-- Erros -->
+    <string name="medication_error_empty_name">Informe o nome do medicamento.</string>
+    <string name="medication_error_name_too_long">O nome deve ter até 60 caracteres.</string>
+    <string name="medication_error_invalid_dosage">Informe uma dose maior que zero.</string>
+    <string name="medication_error_no_times">Adicione pelo menos um horário.</string>
+    <string name="medication_error_duplicate_times">Não repita os horários.</string>
+    <string name="medication_error_no_days">Selecione pelo menos um dia.</string>
+    <string name="medication_error_invalid_interval">Selecione um intervalo válido.</string>
+    <string name="medication_error_end_before_start">O término não pode ser anterior ao início.</string>
+    <string name="medication_error_end_in_past">O término não pode estar no passado.</string>
+    <string name="medication_error_no_active_profile">Cadastre ou selecione um perfil antes de continuar.</string>
+    <string name="medication_error_not_found">Medicamento não encontrado.</string>
+    <string name="medication_error_cannot_edit">Medicamentos pausados não podem ser editados. Retome o tratamento primeiro.</string>
+    <string name="medication_error_cannot_pause">Não foi possível pausar o medicamento.</string>
+    <string name="medication_error_cannot_resume">Não foi possível retomar o medicamento.</string>
+    <string name="medication_error_unexpected">Ocorreu um erro inesperado. Tente novamente.</string>
+    <string name="medication_list_load_error">Não foi possível carregar os medicamentos.</string>
+
+    <!-- Lista -->
+    <string name="medication_add_content_description">Adicionar medicamento</string>
+
+    <!-- Formulário -->
+    <string name="medication_create_title">Novo medicamento</string>
+    <string name="medication_save_create">Salvar medicamento</string>
+    <string name="medication_save_edit">Salvar alterações</string>
+    <string name="medication_field_name">Nome do medicamento</string>
+    <string name="medication_field_dosage_amount">Quantidade da dose</string>
+    <string name="medication_field_dosage_unit">Unidade da dose</string>
+    <string name="medication_field_form">Forma do medicamento</string>
+    <string name="medication_field_frequency_type">Tipo de frequência</string>
+    <string name="medication_field_days">Dias da semana</string>
+    <string name="medication_field_times">Horários das doses</string>
+    <string name="medication_field_interval">Intervalo</string>
+    <string name="medication_field_first_dose">Primeira dose: %1$s</string>
+    <string name="medication_field_color">Cor de identificação</string>
+    <string name="medication_field_notes">Observações (opcional)</string>
+    <string name="medication_field_reminders">Ativar lembretes</string>
+    <string name="medication_frequency_section">Frequência</string>
+    <string name="medication_period_section">Período do tratamento</string>
+    <string name="medication_start_date">Início: %1$s</string>
+    <string name="medication_end_date">Término: %1$s</string>
+    <string name="medication_set_end_date">Definir data de término</string>
+    <string name="medication_remove_end_date">Remover data de término</string>
+    <string name="medication_add_time">Adicionar horário</string>
+    <string name="medication_change_time">Alterar</string>
+    <string name="medication_remove_time">Remover</string>
+    <string name="medication_pick_time">Escolher horário</string>
+
+    <string name="medication_frequency_type_daily">Todos os dias</string>
+    <string name="medication_frequency_type_specific_days">Dias específicos</string>
+    <string name="medication_frequency_type_every_x_hours">A cada X horas</string>
+
+    <plurals name="medication_interval_hours">
+        <item quantity="one">%d hora</item>
+        <item quantity="other">%d horas</item>
+    </plurals>
+
+    <string name="medication_unit_mg">mg</string>
+    <string name="medication_unit_g">g</string>
+    <string name="medication_unit_ml">ml</string>
+    <plurals name="medication_unit_tablets">
+        <item quantity="one">comprimido</item>
+        <item quantity="other">comprimidos</item>
+    </plurals>
+
+    <string name="medication_color_blue">Azul</string>
+    <string name="medication_color_green">Verde</string>
+    <string name="medication_color_purple">Roxo</string>
+
+    <string name="medication_weekday_monday">Segunda-feira</string>
+    <string name="medication_weekday_tuesday">Terça-feira</string>
+    <string name="medication_weekday_wednesday">Quarta-feira</string>
+    <string name="medication_weekday_thursday">Quinta-feira</string>
+    <string name="medication_weekday_friday">Sexta-feira</string>
+    <string name="medication_weekday_saturday">Sábado</string>
+    <string name="medication_weekday_sunday">Domingo</string>
+
+    <!-- Detalhe: situação e ações -->
+    <string name="medication_detail_status">Situação</string>
+    <string name="medication_status_active">Em tratamento</string>
+    <string name="medication_status_scheduled">Agendado</string>
+    <string name="medication_status_paused">Pausado</string>
+    <string name="medication_detail_pause">Pausar tratamento</string>
+    <string name="medication_detail_resume">Retomar tratamento</string>
+    <string name="medication_detail_delete">Excluir medicamento</string>
+
+    <string name="medication_pause_dialog_title">Pausar tratamento?</string>
+    <string name="medication_pause_dialog_message">As doses deixam de aparecer a partir de hoje. O histórico é mantido e você pode retomar depois.</string>
+    <string name="medication_pause_dialog_confirm">Pausar</string>
+    <string name="medication_delete_dialog_title">Excluir medicamento?</string>
+    <string name="medication_delete_dialog_message">Isso apaga o medicamento e TODO o histórico de doses dele. Essa ação não pode ser desfeita.</string>
+    <string name="medication_delete_dialog_confirm">Excluir</string>
+    <string name="medication_dialog_cancel">Cancelar</string>
+
+
+
 </resources>
