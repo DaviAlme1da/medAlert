@@ -1,3 +1,4 @@
+
 package com.davialmeida.medalert.core.presentation
 
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.davialmeida.medalert.R
 import com.davialmeida.medalert.compose.component.MedButton
+import com.davialmeida.medalert.medication.presentation.screen.CreateMedicationScreen
+import com.davialmeida.medalert.medication.presentation.screen.EditMedicationScreen
+import com.davialmeida.medalert.medication.presentation.screen.MedicationDetailScreen
 import com.davialmeida.medalert.profile.presentation.screen.CreateProfileScreen
 import com.davialmeida.medalert.profile.presentation.screen.EditProfileScreen
 import com.davialmeida.medalert.profile.presentation.screen.ProfileScreen
@@ -58,13 +62,66 @@ private fun AppNavHost() {
             MainScreen(
                 onOpenProfiles = {
                     navController.navigate(Screen.PROFILES.route)
+                },
+                onAddMedication = {
+                    navController.navigate(Screen.CREATE_MEDICATION.route)
+                },
+                onOpenMedication = { seriesId ->
+                    navController.navigate(medicationDetailRoute(seriesId))
+                }
+            )
+        }
+        composable(
+            route = Screen.MEDICATION_DETAIL.route,
+            arguments = listOf(
+                navArgument(MEDICATION_ID_ARG) {
+                    type = NavType.LongType
+                }
+            )
+        ) {
+            MedicationDetailScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onEditClick = { seriesId ->
+                    navController.navigate(editMedicationRoute(seriesId))
+                },
+                onDeleted = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable(
+            route = Screen.EDIT_MEDICATION.route,
+            arguments = listOf(
+                navArgument(MEDICATION_ID_ARG) {
+                    type = NavType.LongType
+                }
+            )
+        ) {
+            EditMedicationScreen(
+                onBackClick = { navController.popBackStack() },
+                onMedicationUpdated = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.CREATE_MEDICATION.route) {
+            CreateMedicationScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onMedicationCreated = {
+                    navController.popBackStack()
                 }
             )
         }
 
         composable(Screen.PROFILES.route) {
             ProfileScreen(
-                onBackClick = { navController.popBackStack() },
+                onBackClick = {
+                    navController.popBackStack()
+                },
                 onAddProfileClick = {
                     navController.navigate(Screen.CREATE_PROFILE.route)
                 },
@@ -76,8 +133,12 @@ private fun AppNavHost() {
 
         composable(Screen.CREATE_PROFILE.route) {
             CreateProfileScreen(
-                onBackClick = { navController.popBackStack() },
-                onProfileCreated = { navController.popBackStack() }
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onProfileCreated = {
+                    navController.popBackStack()
+                }
             )
         }
 
@@ -90,8 +151,12 @@ private fun AppNavHost() {
             )
         ) {
             EditProfileScreen(
-                onBackClick = { navController.popBackStack() },
-                onProfileUpdated = { navController.popBackStack() }
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onProfileUpdated = {
+                    navController.popBackStack()
+                }
             )
         }
     }
@@ -114,7 +179,10 @@ private fun ErrorContent(onRetryClick: () -> Unit) {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
+        verticalArrangement = Arrangement.spacedBy(
+            16.dp,
+            Alignment.CenterVertically
+        ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
