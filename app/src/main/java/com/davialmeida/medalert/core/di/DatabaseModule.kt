@@ -3,6 +3,7 @@ package com.davialmeida.medalert.core.di
 import android.content.Context
 import androidx.room.Room
 import com.davialmeida.medalert.core.database.AppDatabase
+import com.davialmeida.medalert.core.database.MIGRATION_1_2
 import com.davialmeida.medalert.medication.data.local.dao.MedicationDao
 import com.davialmeida.medalert.profile.data.local.dao.ProfileDao
 import com.davialmeida.medalert.today.data.local.dao.DoseLogDao
@@ -26,7 +27,9 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             "medalert.db"
-        ).build()
+        )
+            .addMigrations(MIGRATION_1_2)
+            .build()
     }
 
     @Provides

@@ -16,7 +16,7 @@ import com.davialmeida.medalert.today.data.local.entity.DoseLogEntity
         MedicationEntity::class,
         DoseLogEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 @TypeConverters(DatabaseConverters::class)

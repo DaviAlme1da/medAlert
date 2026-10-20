@@ -1,3 +1,4 @@
+
 package com.davialmeida.medalert.medication.data.local.entity
 
 import androidx.room.Entity
@@ -18,12 +19,14 @@ import java.math.BigDecimal
         )
     ],
     indices = [
-        Index(value = ["profileId"])
+        Index(value = ["profileId"]),
+        Index(value = ["seriesId"])
     ]
 )
 data class MedicationEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
+    val seriesId: Long = 0,
     val profileId: Long,
     val name: String,
     val doseAmount: BigDecimal,

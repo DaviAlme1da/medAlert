@@ -41,6 +41,7 @@ fun MedicationEntity.toDomain(): Medication {
 
     return Medication(
         id = id,
+        seriesId = seriesId,
         profileId = profileId,
         name = name,
         dosage = Dosage(
@@ -62,6 +63,7 @@ fun Medication.toEntity(): MedicationEntity {
 
     return MedicationEntity(
         id = id,
+        seriesId = seriesId,
         profileId = profileId,
         name = name,
         doseAmount = dosage.amount,
