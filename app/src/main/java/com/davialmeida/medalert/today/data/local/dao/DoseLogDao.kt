@@ -50,4 +50,29 @@ interface DoseLogDao {
 
     @Delete
     suspend fun delete(doseLog: DoseLogEntity)
+
+    @Query("""
+    SELECT dose_logs.* FROM dose_logs
+    INNER JOIN medications
+        ON medications.id = dose_logs.medicationId
+    WHERE medications.profileId = :profileId
+      AND dose_logs.scheduledDate = :date
+    ORDER BY dose_logs.scheduledDate, dose_logs.scheduledTime
+""")
+    fun observeByProfileAndDate(
+        profileId: Long,
+        date: Long
+    ): Flow<List<DoseLogEntity>>
+
+    @Query("""
+    DELETE FROM dose_logs
+    WHERE medicationId = :medicationId
+      AND scheduledDate = :scheduledDate
+      AND scheduledTime = :scheduledTime
+""")
+    suspend fun deleteByDose(
+        medicationId: Long,
+        scheduledDate: Long,
+        scheduledTime: Int
+    )
 }
