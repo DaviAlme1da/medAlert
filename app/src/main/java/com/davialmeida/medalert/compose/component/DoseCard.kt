@@ -24,6 +24,7 @@ import com.davialmeida.medalert.compose.theme.MedAlertTheme
 fun DoseCard(
     name: String,
     dosage: String,
+    time: String,
     status: DoseStatusUi,
     dotColor: Color,
     modifier: Modifier = Modifier,
@@ -73,7 +74,7 @@ fun DoseCard(
                 )
 
                 Text(
-                    text = dosage,
+                    text = "$time · $dosage",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -106,28 +107,32 @@ private fun DoseCardPreview() {
                 dosage = "500 mg",
                 status = DoseStatusUi.Pending,
                 dotColor = MaterialTheme.colorScheme.primary,
-                onTakeClick = {}
+                onTakeClick = {},
+                time = "08:00"
             )
 
             DoseCard(
                 name = "Losartana",
                 dosage = "50 mg",
                 status = DoseStatusUi.Taken,
-                dotColor = MaterialTheme.colorScheme.secondary
+                dotColor = MaterialTheme.colorScheme.secondary,
+                time = "08:00"
             )
 
             DoseCard(
                 name = "Omeprazol",
                 dosage = "20 mg",
                 status = DoseStatusUi.Skipped,
-                dotColor = MaterialTheme.colorScheme.tertiary
+                dotColor = MaterialTheme.colorScheme.tertiary,
+                time = "08:00"
             )
 
             DoseCard(
                 name = "Amoxicilina",
                 dosage = "500 mg",
                 status = DoseStatusUi.Late,
-                dotColor = MaterialTheme.colorScheme.error
+                dotColor = MaterialTheme.colorScheme.error,
+                time = "08:00"
             )
         }
     }
