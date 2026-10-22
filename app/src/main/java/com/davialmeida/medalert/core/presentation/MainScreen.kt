@@ -31,7 +31,7 @@ import com.davialmeida.medalert.compose.theme.MedAlertTheme
 import com.davialmeida.medalert.history.presentation.HistoryScreen
 import com.davialmeida.medalert.medication.presentation.screen.MedicationsScreen
 import com.davialmeida.medalert.settings.presentation.SettingsScreen
-import com.davialmeida.medalert.today.presentation.TodayScreen
+import com.davialmeida.medalert.today.presentation.screen.TodayScreen
 
 private val bottomBarItems = listOf(
     BottomBarItem(
@@ -107,12 +107,13 @@ fun MainScreen(
         },
     ) { innerPadding ->
         NavHost(
+
             navController = navController,
             startDestination = Screen.TODAY.route,
             modifier = Modifier.padding(innerPadding),
         ) {
             composable(Screen.TODAY.route) {
-                TodayScreen()
+                TodayScreen(onOpenProfiles = onOpenProfiles)
             }
 
             composable(Screen.MEDICATIONS.route) {
