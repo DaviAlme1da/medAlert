@@ -74,11 +74,22 @@ internal class FakeMedicationRepository : MedicationRepository {
         lastDeleted = profileId to seriesId
         data.removeAll { it.profileId == profileId && it.seriesId == seriesId }
     }
+
+    override suspend fun findAllWithReminders(): List<Medication> =
+        data.filter { it.remindersEnabled }
+
+    override fun observeAllWithReminders(): Flow<List<Medication>> =
+        flowOf(data.filter { it.remindersEnabled })
 }
 
-internal class FakeProfileRepository(private val active: Profile?) : ProfileRepository {
+internal class FakeProfileRepository(
+    private val active: Profile?,
+    private val profiles: List<Profile> = emptyList()
+) : ProfileRepository {
     override fun observeAll(): Flow<List<Profile>> = flowOf(emptyList())
-    override fun observeById(id: Long): Flow<Profile?> = flowOf(null)
+    override fun observeById(id: Long): Flow<Profile?> =
+        flowOf(profiles.firstOrNull { it.id == id })
+
     override suspend fun create(profile: Profile): Long = profile.id
     override suspend fun createIfEmpty(profile: Profile): Long? = profile.id
     override suspend fun update(profile: Profile) {}
