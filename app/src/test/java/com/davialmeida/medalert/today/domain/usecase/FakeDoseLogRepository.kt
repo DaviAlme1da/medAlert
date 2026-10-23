@@ -64,4 +64,14 @@ internal class FakeDoseLogRepository : DoseLogRepository {
                     it.scheduledDateTime == scheduledDateTime
         }
     }
+
+    override suspend fun find(
+        medicationId: Long,
+        scheduledDateTime: LocalDateTime
+    ): DoseLog? {
+        return state.value.firstOrNull {
+            it.medicationId == medicationId &&
+                    it.scheduledDateTime == scheduledDateTime
+        }
+    }
 }

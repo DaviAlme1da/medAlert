@@ -18,4 +18,9 @@ interface DoseLogRepository {
         medicationId: Long,
         scheduledDateTime: LocalDateTime
     )
+
+    suspend fun find(
+        medicationId: Long,
+        scheduledDateTime: LocalDateTime
+    ): DoseLog?
 }

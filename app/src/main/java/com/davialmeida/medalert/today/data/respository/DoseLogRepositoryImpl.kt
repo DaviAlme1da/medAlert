@@ -58,4 +58,17 @@ class DoseLogRepositoryImpl @Inject constructor(
             scheduledTime = scheduledDateTime.toMinutesOfDay()
         )
     }
+
+    override suspend fun find(
+        medicationId: Long,
+        scheduledDateTime: LocalDateTime
+    ): DoseLog? {
+        val entity = doseLogDao.findByDose(
+            medicationId = medicationId,
+            scheduledDate = scheduledDateTime.toLocalDate().toEpochDay(),
+            scheduledTime = scheduledDateTime.toMinutesOfDay()
+        )
+
+        return entity?.toDomain()
+    }
 }
