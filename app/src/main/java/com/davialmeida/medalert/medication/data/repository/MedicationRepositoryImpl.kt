@@ -134,4 +134,14 @@ class MedicationRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun findAllWithReminders(): List<Medication> =
+        medicationDao.findAllWithReminders()
+            .map { entity -> entity.toDomain() }
+
+    override fun observeAllWithReminders(): Flow<List<Medication>> =
+        medicationDao.observeAllWithReminders()
+            .map { medications ->
+                medications.map { entity -> entity.toDomain() }
+            }
 }

@@ -45,9 +45,10 @@ interface MedicationRepository {
         newVersion: Medication,
         previousEndDate: LocalDate
     ): Long
-
     suspend fun deleteSeries(
         profileId: Long,
         seriesId: Long
     )
+    suspend fun findAllWithReminders(): List<Medication>
+    fun observeAllWithReminders(): Flow<List<Medication>>
 }

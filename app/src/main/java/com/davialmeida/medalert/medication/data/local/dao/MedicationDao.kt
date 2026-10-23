@@ -61,15 +61,6 @@ interface MedicationDao {
         seriesId: Long
     ): List<MedicationEntity>
 
-    @Insert
-    suspend fun insert(medication: MedicationEntity): Long
-
-    @Update
-    suspend fun update(medication: MedicationEntity)
-
-    @Delete
-    suspend fun delete(medication: MedicationEntity)
-
     @Query(
         """
         DELETE FROM medications
@@ -84,4 +75,28 @@ interface MedicationDao {
 
     @Query("SELECT * FROM medications WHERE id = :id")
     fun observeById(id: Long): Flow<MedicationEntity?>
+
+    @Query("""
+    SELECT * FROM medications
+    WHERE remindersEnabled = 1
+    ORDER BY profileId, name
+""")
+    suspend fun findAllWithReminders(): List<MedicationEntity>
+
+    @Query("""
+    SELECT * FROM medications
+    WHERE remindersEnabled = 1
+    ORDER BY profileId, name
+""")
+    fun observeAllWithReminders(): Flow<List<MedicationEntity>>
+
+    @Insert
+    suspend fun insert(medication: MedicationEntity): Long
+
+    @Update
+    suspend fun update(medication: MedicationEntity)
+
+    @Delete
+    suspend fun delete(medication: MedicationEntity)
+
 }
