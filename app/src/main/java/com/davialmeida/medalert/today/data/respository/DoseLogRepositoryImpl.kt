@@ -1,4 +1,4 @@
-package com.davialmeida.medalert.today.data.repository
+package com.davialmeida.medalert.today.data.respository
 
 import androidx.room.withTransaction
 import com.davialmeida.medalert.core.database.AppDatabase
@@ -26,6 +26,19 @@ class DoseLogRepositoryImpl @Inject constructor(
         doseLogDao.observeByProfileAndDate(
             profileId = profileId,
             date = date.toEpochDay()
+        ).map { logs ->
+            logs.map { it.toDomain() }
+        }
+
+    override fun observeByProfileInRange(
+        profileId: Long,
+        startDate: LocalDate,
+        endDate: LocalDate
+    ): Flow<List<DoseLog>> =
+        doseLogDao.observeForProfileInRange(
+            profileId = profileId,
+            startDate = startDate.toEpochDay(),
+            endDate = endDate.toEpochDay()
         ).map { logs ->
             logs.map { it.toDomain() }
         }

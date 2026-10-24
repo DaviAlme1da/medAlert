@@ -12,6 +12,12 @@ interface DoseLogRepository {
         date: LocalDate
     ): Flow<List<DoseLog>>
 
+    fun observeByProfileInRange(
+        profileId: Long,
+        startDate: LocalDate,
+        endDate: LocalDate
+    ): Flow<List<DoseLog>>
+
     suspend fun upsert(log: DoseLog)
 
     suspend fun delete(
