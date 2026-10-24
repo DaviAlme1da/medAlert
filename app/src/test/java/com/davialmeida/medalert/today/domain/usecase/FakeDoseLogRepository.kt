@@ -74,4 +74,18 @@ internal class FakeDoseLogRepository : DoseLogRepository {
                     it.scheduledDateTime == scheduledDateTime
         }
     }
+
+    override fun observeByProfileInRange(
+        profileId: Long,
+        startDate: LocalDate,
+        endDate: LocalDate
+    ): Flow<List<DoseLog>> {
+        return state.map { logs ->
+            logs.filter {
+                val day = it.scheduledDateTime.toLocalDate()
+                !day.isBefore(startDate) && !day.isAfter(endDate)
+            }
+        }
+    }
+
 }
