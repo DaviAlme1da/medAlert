@@ -243,4 +243,17 @@
     <string name="reminder_permission_message_exact">Permita alarmes exatos para melhorar a pontualidade dos lembretes.</string>
     <string name="reminder_permission_action_notifications">Ativar notificações</string>
     <string name="reminder_permission_action_exact">Configurar alarmes</string>
+
+
+    <string name="history_adherence_title">Adesão ao tratamento</string>
+    <string name="history_adherence_percentage">%1$d%% de adesão</string>
+    <string name="history_adherence_empty">Sem doses registradas</string>
+    <string name="history_period_7_days">Últimos 7 dias</string>
+    <string name="history_period_30_days">Últimos 30 dias</string>
+
+
+    <string name="history_filter_title">Filtrar por medicamento</string>
+    <string name="history_filter_all">Todos</string>
+    <string name="history_empty">Nenhuma dose encontrada neste período.</string>
+
 </resources>

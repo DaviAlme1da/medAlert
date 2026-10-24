@@ -28,7 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import com.davialmeida.medalert.R
 import com.davialmeida.medalert.compose.component.MedButton
 import com.davialmeida.medalert.compose.theme.MedAlertTheme
-import com.davialmeida.medalert.history.presentation.HistoryScreen
+import com.davialmeida.medalert.history.presentation.screen.HistoryScreen
 import com.davialmeida.medalert.medication.presentation.screen.MedicationsScreen
 import com.davialmeida.medalert.settings.presentation.SettingsScreen
 import com.davialmeida.medalert.today.presentation.screen.TodayScreen
