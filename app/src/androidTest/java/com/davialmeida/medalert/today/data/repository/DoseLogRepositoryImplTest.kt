@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.davialmeida.medalert.core.database.AppDatabase
 import com.davialmeida.medalert.medication.data.local.entity.MedicationEntity
 import com.davialmeida.medalert.profile.data.local.entity.ProfileEntity
+import com.davialmeida.medalert.today.data.respository.DoseLogRepositoryImpl
 import com.davialmeida.medalert.today.domain.model.DoseLog
 import com.davialmeida.medalert.today.domain.model.DoseLogStatus
 import kotlinx.coroutines.flow.first
