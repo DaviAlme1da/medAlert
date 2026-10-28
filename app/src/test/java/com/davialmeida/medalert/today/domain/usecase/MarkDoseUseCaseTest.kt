@@ -20,7 +20,6 @@ import java.time.ZoneOffset
 
 class MarkDoseUseCaseTest {
 
-    // "Agora" fixo: sexta-feira, 16/10/2026, 10:00 (UTC).
     private val nowInstant = Instant.parse("2026-10-16T10:00:00Z")
     private val clock = Clock.fixed(nowInstant, ZoneOffset.UTC)
     private val date = LocalDate.of(2026, 10, 16)
@@ -28,9 +27,12 @@ class MarkDoseUseCaseTest {
     private val medicationRepository = FakeMedicationRepository()
     private val doseLogRepository = FakeDoseLogRepository()
 
+    private val listener = FakeDoseRegistrationListener()
+
     private val useCase = MarkDoseUseCase(
         medicationRepository = medicationRepository,
         doseLogRepository = doseLogRepository,
+        registrationListener = listener,
         clock = clock
     )
 
@@ -162,4 +164,34 @@ class MarkDoseUseCaseTest {
 
         assertEquals(AppResult.Error(UnexpectedAppError), result)
     }
+
+    @Test
+    fun `listener is told when a dose is registered`() = runTest {
+        addMedication()
+
+        useCase(1L, date.atTime(8, 0), DoseLogStatus.TAKEN)
+
+        assertEquals(listOf(1L to date.atTime(8, 0)), listener.registered)
+    }
+
+    @Test
+    fun `listener is not called when the registration fails`() = runTest {
+        addMedication()
+
+        useCase(1L, date.plusDays(1).atTime(8, 0), DoseLogStatus.TAKEN)
+
+        assertTrue(listener.registered.isEmpty())
+    }
+
+    @Test
+    fun `listener failure does not fail the registration`() = runTest {
+        addMedication()
+        listener.failOnRegister = true
+
+        val result = useCase(1L, date.atTime(8, 0), DoseLogStatus.TAKEN)
+
+        assertEquals(AppResult.Success(Unit), result)
+        assertEquals(1, doseLogRepository.logs.size)
+    }
+
 }
