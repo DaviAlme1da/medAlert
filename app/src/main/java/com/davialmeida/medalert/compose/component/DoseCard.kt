@@ -1,18 +1,16 @@
 package com.davialmeida.medalert.compose.component
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,32 +28,13 @@ fun DoseCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     onTakeClick: (() -> Unit)? = null,
+    showTime: Boolean = true,
 ) {
-    val cardShape = MaterialTheme.shapes.large
-
-    val cardModifier = if (status == DoseStatusUi.Late) {
-        modifier.border(
-            width = 1.dp,
-            color = MaterialTheme.colorScheme.error,
-            shape = cardShape
-        )
-    } else {
-        modifier
-    }
-
-    Card(
+    MedCard(
+        modifier = modifier,
         onClick = onClick,
-        modifier = cardModifier,
-        shape = cardShape,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 1.dp
-        )
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -63,7 +42,7 @@ fun DoseCard(
 
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
                     text = name,
@@ -74,8 +53,8 @@ fun DoseCard(
                 )
 
                 Text(
-                    text = "$time · $dosage",
-                    style = MaterialTheme.typography.bodyMedium,
+                    text = if (showTime) "$time · $dosage" else dosage,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -85,13 +64,26 @@ fun DoseCard(
                     text = stringResource(R.string.action_taken),
                     onClick = onTakeClick,
                     style = MedButtonStyle.Positive,
-                    compact = true
+                    compact = true,
+                    icon = painterResource(R.drawable.ic_med_check)
                 )
             } else {
-                StatusBadge(status = status)
+                DoseStatusChip(status = status)
             }
         }
     }
+}
+
+@Composable
+private fun DoseStatusChip(status: DoseStatusUi) {
+    val (textRes, kind) = when (status) {
+        DoseStatusUi.Taken -> R.string.status_taken to MedStatusKind.Success
+        DoseStatusUi.Skipped -> R.string.status_skipped to MedStatusKind.Warning
+        DoseStatusUi.Late -> R.string.status_late to MedStatusKind.Danger
+        else -> R.string.status_pending to MedStatusKind.Neutral
+    }
+
+    MedStatusChip(text = stringResource(textRes), kind = kind)
 }
 
 @Preview(showBackground = true)
@@ -103,12 +95,13 @@ private fun DoseCardPreview() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             DoseCard(
-                name = "Paracetamol",
-                dosage = "500 mg",
+                name = "Dipirona",
+                dosage = "1 comprimido · 500 mg",
                 status = DoseStatusUi.Pending,
                 dotColor = MaterialTheme.colorScheme.primary,
                 onTakeClick = {},
-                time = "08:00"
+                time = "14:00",
+                showTime = false
             )
 
             DoseCard(

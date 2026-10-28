@@ -5,17 +5,20 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,18 +44,17 @@ fun WeekStrip(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            TextButton(
+            IconButton(
                 onClick = onPreviousWeek,
-                modifier = Modifier.semantics {
-                    contentDescription = previousDescription
-                },
+                modifier = Modifier.size(40.dp),
             ) {
-                Text(
-                    text = "‹",
-                    style = MaterialTheme.typography.headlineSmall,
+                Icon(
+                    painter = painterResource(R.drawable.ic_med_chevron_left),
+                    contentDescription = previousDescription,
+                    modifier = Modifier.size(20.dp),
                 )
             }
 
@@ -63,19 +65,18 @@ fun WeekStrip(
                         " ${selected.year}",
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            TextButton(
+            IconButton(
                 onClick = onNextWeek,
-                modifier = Modifier.semantics {
-                    contentDescription = nextDescription
-                },
+                modifier = Modifier.size(40.dp),
             ) {
-                Text(
-                    text = "›",
-                    style = MaterialTheme.typography.headlineSmall,
+                Icon(
+                    painter = painterResource(R.drawable.ic_med_chevron_right),
+                    contentDescription = nextDescription,
+                    modifier = Modifier.size(20.dp),
                 )
             }
         }
@@ -88,16 +89,11 @@ fun WeekStrip(
                 Surface(
                     onClick = { onSelect(date) },
                     modifier = Modifier.weight(1f),
-                    shape = MaterialTheme.shapes.medium,
+                    shape = RoundedCornerShape(14.dp),
                     color = if (isSelected) {
                         MaterialTheme.colorScheme.primary
                     } else {
-                        MaterialTheme.colorScheme.surface
-                    },
-                    contentColor = if (isSelected) {
-                        MaterialTheme.colorScheme.onPrimary
-                    } else {
-                        MaterialTheme.colorScheme.onSurface
+                        Color.Transparent
                     },
                     border = if (isToday && !isSelected) {
                         BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
@@ -108,7 +104,7 @@ fun WeekStrip(
                     Column(
                         modifier = Modifier.padding(
                             horizontal = 2.dp,
-                            vertical = 8.dp,
+                            vertical = 10.dp,
                         ),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -116,13 +112,24 @@ fun WeekStrip(
                         Text(
                             text = date.dayOfWeek
                                 .getDisplayName(TextStyle.SHORT, locale)
-                                .replace(".", ""),
+                                .replace(".", "")
+                                .uppercase(locale),
                             style = MaterialTheme.typography.labelSmall,
+                            color = if (isSelected) {
+                                MaterialTheme.colorScheme.onPrimary
+                            } else {
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            },
                         )
 
                         Text(
                             text = date.dayOfMonth.toString(),
-                            style = MaterialTheme.typography.titleSmall,
+                            style = MaterialTheme.typography.titleMedium,
+                            color = if (isSelected) {
+                                MaterialTheme.colorScheme.onPrimary
+                            } else {
+                                MaterialTheme.colorScheme.onSurface
+                            },
                         )
                     }
                 }

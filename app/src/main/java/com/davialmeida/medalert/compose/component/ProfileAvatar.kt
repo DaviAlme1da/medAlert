@@ -19,6 +19,15 @@ import androidx.compose.ui.unit.dp
 import com.davialmeida.medalert.compose.theme.MedAlertTheme
 import com.davialmeida.medalert.compose.theme.ProfileGreen
 
+private fun initialsOf(name: String): String =
+    name.trim()
+        .split(Regex("\\s+"))
+        .filter { it.isNotEmpty() }
+        .take(2)
+        .mapNotNull { it.firstOrNull() }
+        .joinToString("")
+        .uppercase()
+
 @Composable
 fun ProfileAvatar(
     name: String,
@@ -35,8 +44,12 @@ fun ProfileAvatar(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = name.trim().firstOrNull()?.uppercase().orEmpty(),
-            style = MaterialTheme.typography.titleMedium,
+            text = initialsOf(name),
+            style = if (size >= 40.dp) {
+                MaterialTheme.typography.titleMedium
+            } else {
+                MaterialTheme.typography.titleSmall
+            },
             color = MaterialTheme.colorScheme.onPrimary
         )
     }
@@ -47,7 +60,7 @@ fun ProfileAvatar(
 private fun ProfileAvatarPreview() {
     MedAlertTheme {
         ProfileAvatar(
-            name = "davi",
+            name = "Ana Souza",
             color = ProfileGreen,
             modifier = Modifier.padding(16.dp)
         )
