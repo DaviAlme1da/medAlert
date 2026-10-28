@@ -1,6 +1,6 @@
-
 package com.davialmeida.medalert.core.presentation
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,28 +24,52 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.davialmeida.medalert.R
 import com.davialmeida.medalert.compose.component.MedButton
+import com.davialmeida.medalert.compose.theme.MedAlertTheme
 import com.davialmeida.medalert.medication.presentation.screen.CreateMedicationScreen
 import com.davialmeida.medalert.medication.presentation.screen.EditMedicationScreen
 import com.davialmeida.medalert.medication.presentation.screen.MedicationDetailScreen
+import com.davialmeida.medalert.onboarding.presentation.screen.OnboardingScreen
 import com.davialmeida.medalert.profile.presentation.screen.CreateProfileScreen
 import com.davialmeida.medalert.profile.presentation.screen.EditProfileScreen
 import com.davialmeida.medalert.profile.presentation.screen.ProfileScreen
+import com.davialmeida.medalert.settings.domain.model.ThemePreference
+import com.davialmeida.medalert.settings.presentation.viewmodel.ThemeViewModel
 
 @Composable
 fun MedApp(
     modifier: Modifier = Modifier,
-    viewModel: StartupViewModel = hiltViewModel()
+    viewModel: StartupViewModel = hiltViewModel(),
+    themeViewModel: ThemeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val settings by themeViewModel.settings.collectAsStateWithLifecycle()
 
-    Surface(
-        modifier = modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
-        when (uiState) {
-            StartupUiState.Loading -> LoadingContent()
-            StartupUiState.Error -> ErrorContent(onRetryClick = viewModel::retry)
-            StartupUiState.Ready -> AppNavHost()
+    val darkTheme = when (settings.theme) {
+        ThemePreference.SYSTEM -> isSystemInDarkTheme()
+        ThemePreference.LIGHT -> false
+        ThemePreference.DARK -> true
+    }
+
+    MedAlertTheme(darkTheme = darkTheme) {
+        Surface(
+            modifier = modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            when (uiState) {
+                StartupUiState.Loading -> LoadingContent()
+
+                StartupUiState.Onboarding -> {
+                    OnboardingScreen(
+                        onComplete = viewModel::completeOnboarding
+                    )
+                }
+
+                StartupUiState.Error -> {
+                    ErrorContent(onRetryClick = viewModel::retry)
+                }
+
+                StartupUiState.Ready -> AppNavHost()
+            }
         }
     }
 }

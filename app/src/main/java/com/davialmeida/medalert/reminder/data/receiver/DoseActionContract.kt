@@ -8,4 +8,6 @@ object DoseActionContract {
 
     const val ACTION_TAKEN = "TAKEN"
     const val ACTION_SKIPPED = "SKIPPED"
+
+    const val ACTION_SNOOZE = "SNOOZE"
 }

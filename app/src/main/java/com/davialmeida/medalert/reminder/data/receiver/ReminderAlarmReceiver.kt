@@ -4,18 +4,18 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.davialmeida.medalert.core.di.ApplicationScope
 import com.davialmeida.medalert.core.domain.AppResult
 import com.davialmeida.medalert.reminder.data.notification.ReminderNotifier
 import com.davialmeida.medalert.reminder.data.scheduler.ReminderAlarmContract
-import com.davialmeida.medalert.reminder.di.ApplicationScope
 import com.davialmeida.medalert.reminder.domain.usecase.GetDueRemindersUseCase
 import com.davialmeida.medalert.reminder.domain.usecase.RescheduleRemindersUseCase
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.Instant
-import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.time.Instant
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ReminderAlarmReceiver : BroadcastReceiver() {

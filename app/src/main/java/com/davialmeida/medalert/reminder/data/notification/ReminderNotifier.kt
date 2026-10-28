@@ -12,15 +12,16 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.davialmeida.medalert.R
+import com.davialmeida.medalert.medication.domain.model.Dosage
+import com.davialmeida.medalert.medication.domain.model.DosageUnit
 import com.davialmeida.medalert.reminder.data.receiver.DoseActionContract
 import com.davialmeida.medalert.reminder.data.receiver.DoseActionReceiver
 import com.davialmeida.medalert.reminder.domain.model.DueReminder
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.math.BigDecimal
+import java.time.LocalDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
-import com.davialmeida.medalert.medication.domain.model.Dosage
-import com.davialmeida.medalert.medication.domain.model.DosageUnit
-import java.math.BigDecimal
 
 @Singleton
 class ReminderNotifier @Inject constructor(
@@ -40,20 +41,32 @@ class ReminderNotifier @Inject constructor(
             reminder.profileName,
         )
 
-        val notification = NotificationCompat.Builder(context, ReminderNotificationChannel.CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle(reminder.medicationName)
-            .setContentText(text)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(text))
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setCategory(NotificationCompat.CATEGORY_REMINDER)
-            .setAutoCancel(true)
-            .setContentIntent(openAppIntent(id))
-            .addAction(0, context.getString(R.string.reminder_action_taken),
-                actionIntent(reminder, id, DoseActionContract.ACTION_TAKEN))
-            .addAction(0, context.getString(R.string.reminder_action_skipped),
-                actionIntent(reminder, id, DoseActionContract.ACTION_SKIPPED))
-            .build()
+        val notification =
+            NotificationCompat.Builder(context, ReminderNotificationChannel.CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentTitle(reminder.medicationName)
+                .setContentText(text)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(text))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                .setAutoCancel(true)
+                .setContentIntent(openAppIntent(id))
+                .addAction(
+                    0,
+                    context.getString(R.string.reminder_action_taken),
+                    actionIntent(reminder, id, DoseActionContract.ACTION_TAKEN)
+                )
+                .addAction(
+                    0,
+                    context.getString(R.string.reminder_action_skipped),
+                    actionIntent(reminder, id, DoseActionContract.ACTION_SKIPPED)
+                )
+                .addAction(
+                    0,
+                    context.getString(R.string.reminder_action_snooze),
+                    actionIntent(reminder, id, DoseActionContract.ACTION_SNOOZE)
+                )
+                .build()
 
         manager.notify(id, notification)
     }
@@ -102,9 +115,13 @@ class ReminderNotifier @Inject constructor(
 
     private fun actionIntent(reminder: DueReminder, id: Int, action: String): PendingIntent {
         val intent = Intent(context, DoseActionReceiver::class.java).apply {
-            data = Uri.parse("medalert://dose/${reminder.medicationId}/${reminder.scheduledDateTime}/$action")
+            data =
+                Uri.parse("medalert://dose/${reminder.medicationId}/${reminder.scheduledDateTime}/$action")
             putExtra(DoseActionContract.EXTRA_MEDICATION_ID, reminder.medicationId)
-            putExtra(DoseActionContract.EXTRA_SCHEDULED_DATE_TIME, reminder.scheduledDateTime.toString())
+            putExtra(
+                DoseActionContract.EXTRA_SCHEDULED_DATE_TIME,
+                reminder.scheduledDateTime.toString()
+            )
             putExtra(DoseActionContract.EXTRA_ACTION, action)
             putExtra(DoseActionContract.EXTRA_NOTIFICATION_ID, id)
         }
@@ -115,5 +132,9 @@ class ReminderNotifier @Inject constructor(
     }
 }
 
+
+fun notificationId(medicationId: Long, scheduledDateTime: LocalDateTime): Int =
+    "$medicationId|$scheduledDateTime".hashCode()
+
 fun notificationId(reminder: DueReminder): Int =
-    "${reminder.medicationId}|${reminder.scheduledDateTime}".hashCode()
+    notificationId(reminder.medicationId, reminder.scheduledDateTime)

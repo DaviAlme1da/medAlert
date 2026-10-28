@@ -1,9 +1,9 @@
 package com.davialmeida.medalert.reminder.data.scheduler
 
 import android.util.Log
+import com.davialmeida.medalert.core.di.ApplicationScope
 import com.davialmeida.medalert.core.domain.AppResult
 import com.davialmeida.medalert.medication.domain.repository.MedicationRepository
-import com.davialmeida.medalert.reminder.di.ApplicationScope
 import com.davialmeida.medalert.reminder.domain.usecase.RescheduleRemindersUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.catch

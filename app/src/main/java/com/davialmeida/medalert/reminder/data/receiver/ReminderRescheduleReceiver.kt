@@ -4,8 +4,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.davialmeida.medalert.core.di.ApplicationScope
 import com.davialmeida.medalert.core.domain.AppResult
-import com.davialmeida.medalert.reminder.di.ApplicationScope
 import com.davialmeida.medalert.reminder.domain.usecase.RescheduleRemindersUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CancellationException

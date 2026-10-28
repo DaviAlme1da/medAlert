@@ -35,6 +35,9 @@
             android:name=".reminder.data.receiver.ReminderAlarmReceiver"
             android:exported="false" />
 
+        <receiver
+            android:name=".reminder.data.receiver.SnoozeAlarmReceiver"
+            android:exported="false" />
 
         <receiver
             android:name=".reminder.data.receiver.DoseActionReceiver"
