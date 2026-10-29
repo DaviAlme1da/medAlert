@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 
 val PrimaryBlue = Color(0xFF1E6091)
 val PrimaryTint = Color(0xFFE8F1F8)
-val SecondaryGreen = Color(0xFF2B9348)
+val SecondaryGreen = Color(0xFF2D8545)
 
 val BackgroundOffWhite = Color(0xFFF8FAFC)
 val SurfaceWhite = Color(0xFFFFFFFF)
