@@ -29,6 +29,7 @@ fun CreateProfileScreen(
 
     MedScreenScaffold(
         title = stringResource(R.string.profile_create_title),
+        subtitle = stringResource(R.string.profile_form_subtitle),
         onBackClick = onBackClick,
         modifier = modifier
     ) { padding ->

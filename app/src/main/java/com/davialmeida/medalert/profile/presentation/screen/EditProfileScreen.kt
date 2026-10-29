@@ -36,6 +36,7 @@ fun EditProfileScreen(
 
     MedScreenScaffold(
         title = stringResource(R.string.profile_edit_title),
+        subtitle = stringResource(R.string.profile_form_subtitle),
         onBackClick = onBackClick,
         modifier = modifier
     ) { padding ->
