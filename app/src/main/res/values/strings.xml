@@ -1,5 +1,4 @@
 <resources>
-
     <string name="app_name">MedAlert</string>
     <string name="action_taken">Tomei</string>
     <string name="add_medication">Adicionar medicamento</string>
@@ -57,12 +56,10 @@
         <item quantity="one">%d vez ao dia</item>
         <item quantity="other">%d vezes ao dia</item>
     </plurals>
-
     <plurals name="frequency_specific_days_summary">
         <item quantity="one">%1$s · %2$d vez ao dia</item>
         <item quantity="other">%1$s · %2$d vezes ao dia</item>
     </plurals>
-
     <plurals name="frequency_every_x_hours_summary">
         <item quantity="one">A cada %d hora</item>
         <item quantity="other">A cada %d horas</item>
@@ -78,8 +75,6 @@
     <string name="medications_tab_paused">Pausados</string>
     <string name="medications_empty_active">Nenhum medicamento ativo no momento.</string>
     <string name="medications_empty_paused">Nenhum medicamento pausado.</string>
-
-
     <string name="medication_detail_title">Detalhes do medicamento</string>
     <string name="medication_detail_load_error">Não foi possível carregar os detalhes deste medicamento.</string>
     <string name="medication_detail_dosage">Dosagem</string>
@@ -107,12 +102,6 @@
     <string name="edit_medication_placeholder">A tela de edição será implementada na próxima etapa.</string>
     <string name="medication_edit_title">Editar medicamento</string>
     <string name="medication_edit_load_error">Não foi possível carregar o medicamento.</string>
-
-
-
-
-
-    <!-- Erros -->
     <string name="medication_error_empty_name">Informe o nome do medicamento.</string>
     <string name="medication_error_name_too_long">O nome deve ter até 60 caracteres.</string>
     <string name="medication_error_invalid_dosage">Informe uma dose maior que zero.</string>
@@ -129,16 +118,11 @@
     <string name="medication_error_cannot_resume">Não foi possível retomar o medicamento.</string>
     <string name="medication_error_unexpected">Ocorreu um erro inesperado. Tente novamente.</string>
     <string name="medication_list_load_error">Não foi possível carregar os medicamentos.</string>
-
-    <!-- Lista -->
     <string name="medication_add_content_description">Adicionar medicamento</string>
-
-    <!-- Formulário -->
     <string name="medication_create_title">Novo medicamento</string>
     <string name="medication_save_create">Salvar medicamento</string>
     <string name="medication_save_edit">Salvar alterações</string>
     <string name="medication_field_name">Nome do medicamento</string>
-    <string name="medication_field_dosage_amount">Quantidade da dose</string>
     <string name="medication_field_dosage_unit">Unidade da dose</string>
     <string name="medication_field_form">Forma do medicamento</string>
     <string name="medication_field_frequency_type">Tipo de frequência</string>
@@ -159,16 +143,13 @@
     <string name="medication_change_time">Alterar</string>
     <string name="medication_remove_time">Remover</string>
     <string name="medication_pick_time">Escolher horário</string>
-
     <string name="medication_frequency_type_daily">Todos os dias</string>
     <string name="medication_frequency_type_specific_days">Dias específicos</string>
     <string name="medication_frequency_type_every_x_hours">A cada X horas</string>
-
     <plurals name="medication_interval_hours">
         <item quantity="one">%d hora</item>
         <item quantity="other">%d horas</item>
     </plurals>
-
     <string name="medication_unit_mg">mg</string>
     <string name="medication_unit_g">g</string>
     <string name="medication_unit_ml">ml</string>
@@ -176,11 +157,9 @@
         <item quantity="one">comprimido</item>
         <item quantity="other">comprimidos</item>
     </plurals>
-
     <string name="medication_color_blue">Azul</string>
     <string name="medication_color_green">Verde</string>
     <string name="medication_color_purple">Roxo</string>
-
     <string name="medication_weekday_monday">Segunda-feira</string>
     <string name="medication_weekday_tuesday">Terça-feira</string>
     <string name="medication_weekday_wednesday">Quarta-feira</string>
@@ -188,8 +167,6 @@
     <string name="medication_weekday_friday">Sexta-feira</string>
     <string name="medication_weekday_saturday">Sábado</string>
     <string name="medication_weekday_sunday">Domingo</string>
-
-    <!-- Detalhe: situação e ações -->
     <string name="medication_detail_status">Situação</string>
     <string name="medication_status_active">Em tratamento</string>
     <string name="medication_status_scheduled">Agendado</string>
@@ -197,7 +174,6 @@
     <string name="medication_detail_pause">Pausar tratamento</string>
     <string name="medication_detail_resume">Retomar tratamento</string>
     <string name="medication_detail_delete">Excluir medicamento</string>
-
     <string name="medication_pause_dialog_title">Pausar tratamento?</string>
     <string name="medication_pause_dialog_message">As doses deixam de aparecer a partir de hoje. O histórico é mantido e você pode retomar depois.</string>
     <string name="medication_pause_dialog_confirm">Pausar</string>
@@ -205,7 +181,6 @@
     <string name="medication_delete_dialog_message">Isso apaga o medicamento e TODO o histórico de doses dele. Essa ação não pode ser desfeita.</string>
     <string name="medication_delete_dialog_confirm">Excluir</string>
     <string name="medication_dialog_cancel">Cancelar</string>
-
     <string name="today_progress_title">Progresso do dia</string>
     <string name="today_progress_summary">%1$d de %2$d doses tomadas</string>
     <string name="today_progress_empty">Nenhuma dose programada para hoje</string>
@@ -216,7 +191,6 @@
     <string name="action_cancel">Cancelar</string>
     <string name="week_strip_previous">Semana anterior</string>
     <string name="week_strip_next">Próxima semana</string>
-
     <string name="today_screen_title">Hoje</string>
     <string name="today_no_profile_selected">Nenhum perfil</string>
     <string name="today_no_profile_message">Cadastre um perfil para ver as doses.</string>
@@ -230,30 +204,96 @@
     <string name="today_error_medication_not_found">Medicamento não encontrado.</string>
     <string name="today_error_unexpected">Ocorreu um erro inesperado. Tente novamente.</string>
     <string name="today_error_dismiss">Fechar</string>
-
     <string name="reminder_channel_name">Lembretes de medicamentos</string>
     <string name="reminder_channel_description">Notificações nos horários dos medicamentos</string>
     <string name="reminder_notification_text">Dose: %1$s • Perfil: %2$s</string>
     <string name="reminder_action_taken">Tomei</string>
     <string name="reminder_action_skipped">Pular</string>
-
     <string name="reminder_permission_title">Configure seus lembretes</string>
     <string name="reminder_permission_message_both">Ative as notificações e os alarmes exatos para receber seus lembretes.</string>
     <string name="reminder_permission_message_notifications">Ative as notificações para receber os lembretes dos medicamentos.</string>
     <string name="reminder_permission_message_exact">Permita alarmes exatos para melhorar a pontualidade dos lembretes.</string>
     <string name="reminder_permission_action_notifications">Ativar notificações</string>
     <string name="reminder_permission_action_exact">Configurar alarmes</string>
-
-
     <string name="history_adherence_title">Adesão ao tratamento</string>
     <string name="history_adherence_percentage">%1$d%% de adesão</string>
     <string name="history_adherence_empty">Sem doses registradas</string>
     <string name="history_period_7_days">Últimos 7 dias</string>
     <string name="history_period_30_days">Últimos 30 dias</string>
-
-
     <string name="history_filter_title">Filtrar por medicamento</string>
     <string name="history_filter_all">Todos</string>
     <string name="history_empty">Nenhuma dose encontrada neste período.</string>
-
+    <string name="reminder_action_snooze">Adiar</string>
+    <string name="onboarding_skip">Pular</string>
+    <string name="onboarding_back">Voltar</string>
+    <string name="onboarding_next">Continuar</string>
+    <string name="onboarding_start">Começar</string>
+    <string name="settings_save_error">Não foi possível salvar a configuração.</string>
+    <string name="settings_section_profiles">Perfis</string>
+    <string name="settings_profiles_manage">Gerenciar perfis</string>
+    <string name="settings_section_reminders">Lembretes</string>
+    <string name="settings_notifications">Notificações</string>
+    <string name="settings_exact_alarms">Alarmes exatos</string>
+    <string name="settings_permission_allowed">Permitido</string>
+    <string name="settings_permission_denied">Desativado. Toque para ativar.</string>
+    <string name="settings_snooze_title">Tempo para adiar</string>
+    <plurals name="settings_snooze_minutes">
+        <item quantity="one">%d minuto</item>
+        <item quantity="other">%d minutos</item>
+    </plurals>
+    <string name="settings_section_appearance">Aparência</string>
+    <string name="settings_theme_title">Tema</string>
+    <string name="settings_theme_system">Seguir o sistema</string>
+    <string name="settings_theme_light">Claro</string>
+    <string name="settings_theme_dark">Escuro</string>
+    <string name="settings_section_about">Sobre</string>
+    <string name="settings_version">Versão</string>
+    <string name="today_greeting">Olá</string>
+    <string name="today_progress_short">%1$d de %2$d doses hoje</string>
+    <string name="today_progress_percent">%1$d%%</string>
+    <string name="today_empty_title">Nenhum medicamento para hoje</string>
+    <string name="today_empty_message">Seu dia está livre. Adicione um medicamento quando quiser começar sua rotina.</string>
+    <string name="action_taken_now">Tomei agora</string>
+    <string name="settings_subtitle">Preferências do aplicativo</string>
+    <string name="settings_section_permissions">Permissões</string>
+    <string name="settings_notifications_desc">Alertas de doses e atrasos</string>
+    <string name="settings_exact_alarms_desc">Lembretes no horário correto</string>
+    <string name="settings_status_active">Ativo</string>
+    <string name="settings_status_inactive">Desativado</string>
+    <string name="settings_configure">Configurar</string>
+    <string name="settings_theme_system_short">Sistema</string>
+    <string name="profile_screen_subtitle">Quem você está cuidando</string>
+    <string name="profile_list_headline">Perfis de cuidado</string>
+    <string name="profile_list_description">Organize medicamentos e lembretes separadamente para cada pessoa.</string>
+    <string name="profile_list_section">Seus perfis</string>
+    <string name="profile_active_short">Ativo</string>
+    <string name="profile_form_subtitle">Crie ou edite os dados da pessoa</string>
+    <string name="profile_name_helper">Use o nome pelo qual a pessoa é conhecida.</string>
+    <plurals name="profile_count">
+        <item quantity="one">%d perfil</item>
+        <item quantity="other">%d perfis</item>
+    </plurals>
+    <string name="medications_subtitle_empty">Organize sua rotina de cuidado</string>
+    <string name="medications_empty_active_title">Sua lista está pronta para começar</string>
+    <string name="medications_empty_active_message">Adicione seu primeiro medicamento e deixe os horários mais tranquilos.</string>
+    <string name="medication_next_label">Próxima</string>
+    <string name="medication_next_today">Hoje, %1$s</string>
+    <string name="medication_dosage_helper">Use a dose descrita na receita ou na embalagem.</string>
+    <string name="medication_reminders_hint">Receba uma notificação no horário</string>
+    <plurals name="medications_active_count">
+        <item quantity="one">%d medicamento ativo</item>
+        <item quantity="other">%d medicamentos ativos</item>
+    </plurals>
+    <string name="medication_field_dosage_amount">Quantidade</string>
+    <string name="history_subtitle">Acompanhe suas doses</string>
+    <string name="onboarding_welcome_title">Nunca mais esqueça um remédio</string>
+    <string name="onboarding_welcome_description">Receba lembretes gentis no horário certo e cuide da sua saúde com mais tranquilidade.</string>
+    <string name="onboarding_how_title">Acompanhe sua rotina</string>
+    <string name="onboarding_how_description">Veja suas doses do dia, registre cada cuidado e acompanhe seu progresso sem pressão.</string>
+    <string name="onboarding_permissions_title">Lembretes que chegam na hora</string>
+    <string name="onboarding_permissions_description">Para avisar você mesmo com o app fechado, o MedAlert precisa enviar notificações e usar alarmes exatos. Você pode mudar isso depois nos Ajustes.</string>
+    <string name="onboarding_open_settings">Abrir configurações</string>
+    <string name="onboarding_not_now">Agora não</string>
+    <string name="onboarding_permission_notifications_desc">Para mostrar seus lembretes de dose.</string>
+    <string name="onboarding_permission_exact_desc">Para avisar no horário que você definiu.</string>
 </resources>
