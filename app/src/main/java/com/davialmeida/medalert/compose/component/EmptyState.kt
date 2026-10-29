@@ -1,5 +1,6 @@
 package com.davialmeida.medalert.compose.component
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -7,7 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -44,45 +45,48 @@ fun EmptyState(
 
         Text(
             text = title,
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center
         )
 
-        Text(
-            text = message,
-            modifier = Modifier.padding(horizontal = 24.dp),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center
-        )
+        if (message.isNotBlank()) {
+            Text(
+                text = message,
+                modifier = Modifier.padding(horizontal = 24.dp),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+        }
 
         if (actionText != null && onActionClick != null) {
             MedButton(
                 text = actionText,
-                onClick = onActionClick
+                onClick = onActionClick,
+                modifier = Modifier.padding(top = 8.dp)
             )
         }
     }
 }
 
 @Composable
-private fun EmptyStatePlaceholder() {
+fun EmptyStateIllustration(
+    @DrawableRes iconRes: Int,
+    modifier: Modifier = Modifier,
+) {
     Box(
-        modifier = Modifier
-            .size(80.dp)
-            .clip(CircleShape)
-            .background(
-                color = MaterialTheme.colorScheme.primaryContainer
-            ),
+        modifier = modifier
+            .size(112.dp)
+            .clip(RoundedCornerShape(28.dp))
+            .background(MaterialTheme.colorScheme.primaryContainer),
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            painter = painterResource(
-                id = R.drawable.ic_warning
-            ),
+            painter = painterResource(id = iconRes),
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-            modifier = Modifier.size(32.dp)
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(48.dp)
         )
     }
 }
@@ -95,10 +99,10 @@ private fun EmptyStatePreview() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            title = stringResource(R.string.empty_medications_title),
-            message = stringResource(R.string.empty_medications_message),
+            title = stringResource(R.string.medications_empty_active_title),
+            message = stringResource(R.string.medications_empty_active_message),
             illustration = {
-                EmptyStatePlaceholder()
+                EmptyStateIllustration(iconRes = R.drawable.ic_nav_medications)
             },
             actionText = stringResource(R.string.add_medication),
             onActionClick = {}

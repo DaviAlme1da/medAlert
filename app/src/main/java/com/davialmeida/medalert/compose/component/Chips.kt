@@ -5,12 +5,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -18,7 +19,7 @@ import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -34,19 +35,45 @@ fun MedFilterChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    FilterChip(
-        selected = selected,
-        onClick = onClick,
-        label = {
-            Text(text = label)
-        },
-        modifier = modifier,
-        shape = CircleShape,
-        colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-            selectedLabelColor = MaterialTheme.colorScheme.primary
-        )
-    )
+    Box(
+        modifier = modifier.minimumInteractiveComponentSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Surface(
+            modifier = Modifier
+                .clip(CircleShape)
+                .selectable(
+                    selected = selected,
+                    onClick = onClick,
+                    role = Role.RadioButton
+                ),
+            shape = CircleShape,
+            color = if (selected) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.surface
+            },
+            contentColor = if (selected) {
+                MaterialTheme.colorScheme.onPrimary
+            } else {
+                MaterialTheme.colorScheme.onSurface
+            },
+            border = BorderStroke(
+                width = 1.dp,
+                color = if (selected) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.outlineVariant
+                }
+            )
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            )
+        }
+    }
 }
 
 @Composable
@@ -57,9 +84,9 @@ fun WeekdayChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
+    Box(
         modifier = modifier
-            .minimumInteractiveComponentSize()
+            .heightIn(min = 48.dp)
             .semantics {
                 this.contentDescription = contentDescription
             }
@@ -70,34 +97,40 @@ fun WeekdayChip(
                 },
                 role = Role.Checkbox
             ),
-        shape = CircleShape,
-        color = if (selected) {
-            MaterialTheme.colorScheme.primary
-        } else {
-            Color.Transparent
-        },
-        border = if (!selected) {
-            BorderStroke(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.outline
-            )
-        } else {
-            null
-        }
+        contentAlignment = Alignment.Center
     ) {
-        Box(
+        Surface(
             modifier = Modifier.size(40.dp),
-            contentAlignment = Alignment.Center
+            shape = CircleShape,
+            color = if (selected) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.surface
+            },
+            border = if (!selected) {
+                BorderStroke(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.outlineVariant
+                )
+            } else {
+                null
+            }
         ) {
-            Text(
-                modifier = Modifier.clearAndSetSemantics {},
-                text = label,
-                color = if (selected) {
-                    MaterialTheme.colorScheme.onPrimary
-                } else {
-                    MaterialTheme.colorScheme.onSurface
-                }
-            )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    modifier = Modifier.clearAndSetSemantics {},
+                    text = label,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = if (selected) {
+                        MaterialTheme.colorScheme.onPrimary
+                    } else {
+                        MaterialTheme.colorScheme.onSurface
+                    }
+                )
+            }
         }
     }
 }
@@ -113,49 +146,15 @@ private fun ChipsPreview() {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                MedFilterChip(
-                    label = "Todos",
-                    selected = true,
-                    onClick = {}
-                )
-
-                MedFilterChip(
-                    label = "Pendentes",
-                    selected = false,
-                    onClick = {}
-                )
+                MedFilterChip(label = "Comprimido", selected = true, onClick = {})
+                MedFilterChip(label = "Cápsula", selected = false, onClick = {})
             }
 
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                WeekdayChip(
-                    label = "S",
-                    contentDescription = "Segunda-feira",
-                    selected = true,
-                    onClick = {}
-                )
-
-                WeekdayChip(
-                    label = "T",
-                    contentDescription = "Terça-feira",
-                    selected = false,
-                    onClick = {}
-                )
-
-                WeekdayChip(
-                    label = "Q",
-                    contentDescription = "Quarta-feira",
-                    selected = false,
-                    onClick = {}
-                )
-
-                WeekdayChip(
-                    label = "Q",
-                    contentDescription = "Quinta-feira",
-                    selected = true,
-                    onClick = {}
-                )
+            Row {
+                WeekdayChip("S", "Segunda-feira", selected = true, onClick = {})
+                WeekdayChip("T", "Terça-feira", selected = false, onClick = {})
+                WeekdayChip("Q", "Quarta-feira", selected = false, onClick = {})
+                WeekdayChip("Q", "Quinta-feira", selected = true, onClick = {})
             }
         }
     }

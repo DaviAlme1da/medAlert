@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,6 +31,7 @@ fun MedTextField(
     label: String,
     modifier: Modifier = Modifier,
     error: String? = null,
+    helper: String? = null,
     enabled: Boolean = true,
     singleLine: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -41,6 +43,8 @@ fun MedTextField(
     if (error != null) {
         lastError = error
     }
+
+    val surface = MaterialTheme.colorScheme.surface
 
     OutlinedTextField(
         value = value,
@@ -54,6 +58,15 @@ fun MedTextField(
         singleLine = singleLine,
         keyboardOptions = keyboardOptions,
         shape = MaterialTheme.shapes.medium,
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedContainerColor = surface,
+            unfocusedContainerColor = surface,
+            disabledContainerColor = surface,
+            errorContainerColor = surface,
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+            focusedLabelColor = MaterialTheme.colorScheme.primary
+        ),
         supportingText = {
             Box(
                 modifier = Modifier.heightIn(min = 16.dp)
@@ -70,6 +83,14 @@ fun MedTextField(
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
+                }
+
+                if (!isError && helper != null) {
+                    Text(
+                        text = helper,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodySmall
+                    )
                 }
             }
         }
@@ -89,7 +110,8 @@ private fun MedTextFieldPreview() {
             MedTextField(
                 value = "Paracetamol",
                 onValueChange = {},
-                label = "Nome"
+                label = "Nome",
+                helper = "Use o nome da embalagem."
             )
 
             MedTextField(

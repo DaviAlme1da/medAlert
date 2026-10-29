@@ -45,10 +45,10 @@ fun ProfileAvatar(
     ) {
         Text(
             text = initialsOf(name),
-            style = if (size >= 40.dp) {
-                MaterialTheme.typography.titleMedium
-            } else {
-                MaterialTheme.typography.titleSmall
+            style = when {
+                size >= 72.dp -> MaterialTheme.typography.headlineSmall
+                size >= 40.dp -> MaterialTheme.typography.titleMedium
+                else -> MaterialTheme.typography.titleSmall
             },
             color = MaterialTheme.colorScheme.onPrimary
         )

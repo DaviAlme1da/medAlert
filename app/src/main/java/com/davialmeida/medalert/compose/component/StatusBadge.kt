@@ -21,8 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.davialmeida.medalert.R
 import com.davialmeida.medalert.compose.theme.MedAlertTheme
-import com.davialmeida.medalert.compose.theme.SuccessContainer
-import com.davialmeida.medalert.compose.theme.SuccessOnContainer
+import com.davialmeida.medalert.compose.theme.statusColors
 
 enum class DoseStatusUi {
     Pending,
@@ -51,22 +50,22 @@ private fun getStatusBadgeConfig(
         )
 
         DoseStatusUi.Taken -> StatusBadgeConfig(
-            containerColor = SuccessContainer,
-            contentColor = SuccessOnContainer,
+            containerColor = MaterialTheme.statusColors.successContainer,
+            contentColor = MaterialTheme.statusColors.onSuccessContainer,
             labelRes = R.string.status_taken,
             iconRes = R.drawable.ic_check
         )
 
         DoseStatusUi.Skipped -> StatusBadgeConfig(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+            containerColor = MaterialTheme.statusColors.warningContainer,
+            contentColor = MaterialTheme.statusColors.onWarningContainer,
             labelRes = R.string.status_skipped,
             iconRes = R.drawable.ic_close
         )
 
         DoseStatusUi.Late -> StatusBadgeConfig(
-            containerColor = MaterialTheme.colorScheme.errorContainer,
-            contentColor = MaterialTheme.colorScheme.onErrorContainer,
+            containerColor = MaterialTheme.statusColors.dangerContainer,
+            contentColor = MaterialTheme.statusColors.onDangerContainer,
             labelRes = R.string.status_late,
             iconRes = R.drawable.ic_warning
         )
