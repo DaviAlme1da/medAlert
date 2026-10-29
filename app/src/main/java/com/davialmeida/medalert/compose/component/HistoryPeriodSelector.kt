@@ -2,8 +2,6 @@ package com.davialmeida.medalert.compose.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,28 +21,16 @@ fun HistoryPeriodSelector(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        FilterChip(
+        MedFilterChip(
+            label = stringResource(R.string.history_period_7_days),
             selected = selectedPeriod == HistoryPeriod.LAST_7_DAYS,
-            onClick = {
-                onPeriodSelected(HistoryPeriod.LAST_7_DAYS)
-            },
-            label = {
-                Text(
-                    text = stringResource(R.string.history_period_7_days)
-                )
-            }
+            onClick = { onPeriodSelected(HistoryPeriod.LAST_7_DAYS) }
         )
 
-        FilterChip(
+        MedFilterChip(
+            label = stringResource(R.string.history_period_30_days),
             selected = selectedPeriod == HistoryPeriod.LAST_30_DAYS,
-            onClick = {
-                onPeriodSelected(HistoryPeriod.LAST_30_DAYS)
-            },
-            label = {
-                Text(
-                    text = stringResource(R.string.history_period_30_days)
-                )
-            }
+            onClick = { onPeriodSelected(HistoryPeriod.LAST_30_DAYS) }
         )
     }
 }

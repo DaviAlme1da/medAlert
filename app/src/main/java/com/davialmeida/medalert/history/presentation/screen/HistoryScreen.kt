@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -32,6 +31,8 @@ import com.davialmeida.medalert.compose.component.DoseActionSheet
 import com.davialmeida.medalert.compose.component.HistoryDaySection
 import com.davialmeida.medalert.compose.component.HistoryDoseSelection
 import com.davialmeida.medalert.compose.component.HistoryPeriodSelector
+import com.davialmeida.medalert.compose.component.MedFilterChip
+import com.davialmeida.medalert.compose.component.MedTabHeader
 import com.davialmeida.medalert.history.presentation.viewmodel.HistoryViewModel
 import com.davialmeida.medalert.today.presentation.extension.toTodayMessageRes
 import java.time.format.DateTimeFormatter
@@ -50,149 +51,150 @@ fun HistoryScreen(
         mutableStateOf<HistoryDoseSelection?>(null)
     }
 
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        item {
-            Text(
-                text = stringResource(R.string.nav_history),
-                style = MaterialTheme.typography.headlineSmall
-            )
-        }
+    Column(modifier = modifier.fillMaxSize()) {
+        MedTabHeader(
+            title = stringResource(R.string.nav_history),
+            subtitle = stringResource(R.string.history_subtitle)
+        )
 
-        item {
-            HistoryPeriodSelector(
-                selectedPeriod = state.period,
-                onPeriodSelected = viewModel::selectPeriod,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-
-        if (state.medications.isNotEmpty()) {
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
             item {
-                Column {
-                    Text(
-                        text = stringResource(R.string.history_filter_title),
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-
-                    LazyRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        item {
-                            FilterChip(
-                                selected = state.selectedSeriesId == null,
-                                onClick = { viewModel.selectSeries(null) },
-                                label = {
-                                    Text(stringResource(R.string.history_filter_all))
-                                }
-                            )
-                        }
-
-                        items(
-                            items = state.medications,
-                            key = { it.seriesId }
-                        ) { medication ->
-                            FilterChip(
-                                selected = state.selectedSeriesId == medication.seriesId,
-                                onClick = {
-                                    viewModel.selectSeries(medication.seriesId)
-                                },
-                                label = { Text(medication.name) }
-                            )
-                        }
-                    }
-                }
-            }
-        }
-
-        state.actionError?.let { error ->
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(error.toTodayMessageRes()),
-                        modifier = Modifier.weight(1f),
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-
-                    TextButton(onClick = viewModel::clearActionError) {
-                        Text(stringResource(R.string.today_error_dismiss))
-                    }
-                }
-            }
-        }
-
-        when {
-            state.isLoading -> item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 32.dp),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            state.hasLoadError -> item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(R.string.today_load_error),
-                        modifier = Modifier.weight(1f),
-                        color = MaterialTheme.colorScheme.error
-                    )
-
-                    TextButton(onClick = viewModel::retry) {
-                        Text(stringResource(R.string.retry))
-                    }
-                }
-            }
-
-            state.activeProfile == null -> item {
-                Text(
-                    text = stringResource(R.string.today_no_profile_message),
-                    style = MaterialTheme.typography.bodyLarge
+                HistoryPeriodSelector(
+                    selectedPeriod = state.period,
+                    onPeriodSelected = viewModel::selectPeriod,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
 
-            state.days.isEmpty() -> item {
-                Text(
-                    text = stringResource(R.string.history_empty),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-
-            else -> {
+            if (state.medications.isNotEmpty()) {
                 item {
-                    AdherenceSummaryCard(
-                        percentage = state.summary.percentage,
-                        taken = state.summary.taken,
-                        skipped = state.summary.skipped,
-                        late = state.summary.late,
-                        modifier = Modifier.fillMaxWidth()
+                    Column {
+                        Text(
+                            text = stringResource(R.string.history_filter_title),
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(bottom = 4.dp)
+                        )
+
+                        LazyRow(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            item {
+                                MedFilterChip(
+                                    label = stringResource(R.string.history_filter_all),
+                                    selected = state.selectedSeriesId == null,
+                                    onClick = { viewModel.selectSeries(null) }
+                                )
+                            }
+
+                            items(
+                                items = state.medications,
+                                key = { it.seriesId }
+                            ) { medication ->
+                                MedFilterChip(
+                                    label = medication.name,
+                                    selected = state.selectedSeriesId == medication.seriesId,
+                                    onClick = {
+                                        viewModel.selectSeries(medication.seriesId)
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            state.actionError?.let { error ->
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(error.toTodayMessageRes()),
+                            modifier = Modifier.weight(1f),
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+
+                        TextButton(onClick = viewModel::clearActionError) {
+                            Text(stringResource(R.string.today_error_dismiss))
+                        }
+                    }
+                }
+            }
+
+            when {
+                state.isLoading -> item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 32.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+
+                state.hasLoadError -> item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(R.string.today_load_error),
+                            modifier = Modifier.weight(1f),
+                            color = MaterialTheme.colorScheme.error
+                        )
+
+                        TextButton(onClick = viewModel::retry) {
+                            Text(stringResource(R.string.retry))
+                        }
+                    }
+                }
+
+                state.activeProfile == null -> item {
+                    Text(
+                        text = stringResource(R.string.today_no_profile_message),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
 
-                items(
-                    items = state.days,
-                    key = { it.date.toString() }
-                ) { day ->
-                    HistoryDaySection(
-                        day = day,
-                        today = state.today,
-                        onDoseClick = { selectedDose = it }
+                state.days.isEmpty() -> item {
+                    Text(
+                        text = stringResource(R.string.history_empty),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
+                }
+
+                else -> {
+                    item {
+                        AdherenceSummaryCard(
+                            percentage = state.summary.percentage,
+                            taken = state.summary.taken,
+                            skipped = state.summary.skipped,
+                            late = state.summary.late,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+
+                    items(
+                        items = state.days,
+                        key = { it.date.toString() }
+                    ) { day ->
+                        HistoryDaySection(
+                            day = day,
+                            today = state.today,
+                            onDoseClick = { selectedDose = it }
+                        )
+                    }
                 }
             }
         }
