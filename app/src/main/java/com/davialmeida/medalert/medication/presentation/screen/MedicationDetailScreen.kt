@@ -1,17 +1,22 @@
 package com.davialmeida.medalert.medication.presentation.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -22,6 +27,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -31,7 +37,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.davialmeida.medalert.R
 import com.davialmeida.medalert.compose.component.MedAlertDialog
 import com.davialmeida.medalert.compose.component.MedButton
+import com.davialmeida.medalert.compose.component.MedButtonStyle
+import com.davialmeida.medalert.compose.component.MedCard
 import com.davialmeida.medalert.compose.component.MedScreenScaffold
+import com.davialmeida.medalert.compose.component.MedStatusChip
+import com.davialmeida.medalert.compose.component.MedStatusKind
 import com.davialmeida.medalert.medication.domain.model.Medication
 import com.davialmeida.medalert.medication.presentation.extension.toComposeColor
 import com.davialmeida.medalert.medication.presentation.extension.toDisplayText
@@ -171,61 +181,94 @@ private fun MedicationDetailContent(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(
-            text = medication.name,
-            style = MaterialTheme.typography.headlineSmall,
-            color = medication.color.toComposeColor()
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(56.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(MaterialTheme.colorScheme.primaryContainer),
+                contentAlignment = Alignment.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clip(CircleShape)
+                        .background(medication.color.toComposeColor())
+                )
+            }
+
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
+                Text(
+                    text = medication.name,
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+
+                Text(
+                    text = medication.dosage.toDisplayText() + " · " +
+                            stringResource(medication.form.toLabelRes()),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+
+        MedStatusChip(
+            text = stringResource(state.status.toLabelRes()),
+            kind = MedStatusKind.Neutral
         )
 
-        HorizontalDivider()
-
-        DetailRow(
-            label = stringResource(R.string.medication_detail_status),
-            value = stringResource(state.status.toLabelRes())
-        )
-
-        DetailRow(
-            label = stringResource(R.string.medication_detail_dosage),
-            value = medication.dosage.toDisplayText()
-        )
-
-        DetailRow(
-            label = stringResource(R.string.medication_detail_form),
-            value = stringResource(medication.form.toLabelRes())
-        )
-
-        DetailRow(
-            label = stringResource(R.string.medication_detail_frequency),
-            value = medication.frequency.toSummary()
-        )
-
-        DetailRow(
-            label = stringResource(R.string.medication_detail_start_date),
-            value = medication.startDate.format(dateFormatter)
-        )
-
-        DetailRow(
-            label = stringResource(R.string.medication_detail_end_date),
-            value = medication.endDate?.format(dateFormatter)
-                ?: stringResource(R.string.medication_detail_no_end_date)
-        )
-
-        DetailRow(
-            label = stringResource(R.string.medication_detail_reminders),
-            value = stringResource(
-                if (medication.remindersEnabled) {
-                    R.string.common_enabled
-                } else {
-                    R.string.common_disabled
-                }
-            )
-        )
-
-        if (medication.notes.isNotBlank()) {
+        MedCard(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp)
+        ) {
             DetailRow(
-                label = stringResource(R.string.medication_detail_notes),
-                value = medication.notes
+                label = stringResource(R.string.medication_detail_frequency),
+                value = medication.frequency.toSummary()
             )
+
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+
+            DetailRow(
+                label = stringResource(R.string.medication_detail_start_date),
+                value = medication.startDate.format(dateFormatter)
+            )
+
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+
+            DetailRow(
+                label = stringResource(R.string.medication_detail_end_date),
+                value = medication.endDate?.format(dateFormatter)
+                    ?: stringResource(R.string.medication_detail_no_end_date)
+            )
+
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+
+            DetailRow(
+                label = stringResource(R.string.medication_detail_reminders),
+                value = stringResource(
+                    if (medication.remindersEnabled) {
+                        R.string.common_enabled
+                    } else {
+                        R.string.common_disabled
+                    }
+                )
+            )
+
+            if (medication.notes.isNotBlank()) {
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+
+                DetailRow(
+                    label = stringResource(R.string.medication_detail_notes),
+                    value = medication.notes
+                )
+            }
         }
 
         state.actionError?.let { error ->
@@ -246,13 +289,13 @@ private fun MedicationDetailContent(
         }
 
         if (state.canPause) {
-            OutlinedButton(
+            MedButton(
+                text = stringResource(R.string.medication_detail_pause),
                 onClick = onPauseClick,
-                enabled = !state.isBusy,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(stringResource(R.string.medication_detail_pause))
-            }
+                modifier = Modifier.fillMaxWidth(),
+                style = MedButtonStyle.Outlined,
+                enabled = !state.isBusy
+            )
         }
 
         if (state.canResume) {
@@ -272,7 +315,8 @@ private fun MedicationDetailContent(
         ) {
             Text(
                 text = stringResource(R.string.medication_detail_delete),
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.titleSmall
             )
         }
     }
@@ -283,15 +327,22 @@ private fun DetailRow(
     label: String,
     value: String
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp)
+    ) {
         Text(
             text = label,
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+
         Text(
             text = value,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }

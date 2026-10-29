@@ -2,17 +2,30 @@ package com.davialmeida.medalert.medication.presentation.screen
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,19 +35,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.davialmeida.medalert.R
+import com.davialmeida.medalert.compose.component.ColorOption
 import com.davialmeida.medalert.compose.component.MedButton
+import com.davialmeida.medalert.compose.component.MedButtonStyle
+import com.davialmeida.medalert.compose.component.MedFilterChip
 import com.davialmeida.medalert.compose.component.MedTextField
+import com.davialmeida.medalert.compose.component.WeekdayChip
 import com.davialmeida.medalert.medication.domain.model.DosageUnit
 import com.davialmeida.medalert.medication.domain.model.Frequency
 import com.davialmeida.medalert.medication.domain.model.MedicationColor
 import com.davialmeida.medalert.medication.domain.model.MedicationForm
 import com.davialmeida.medalert.medication.presentation.extension.label
+import com.davialmeida.medalert.medication.presentation.extension.toComposeColor
 import com.davialmeida.medalert.medication.presentation.extension.toLabelRes
 import com.davialmeida.medalert.medication.presentation.extension.toMessageRes
 import com.davialmeida.medalert.medication.presentation.state.FrequencyType
@@ -53,7 +74,9 @@ private val timeFormatter: DateTimeFormatter =
 private val dateFormatter: DateTimeFormatter =
     DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
 
-/** Agrupa as ações do formulário para não passar 18 lambdas soltas. */
+/**
+ * Agrupa as ações do formulário para não passar 17 lambdas soltas.
+ */
 class MedicationFormActions(
     val onNameChange: (String) -> Unit,
     val onDosageAmountChange: (String) -> Unit,
@@ -101,6 +124,7 @@ fun rememberMedicationFormActions(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MedicationFormContent(
     state: MedicationFormUiState,
@@ -112,8 +136,8 @@ fun MedicationFormContent(
     val context = LocalContext.current
 
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         MedTextField(
             value = state.name,
@@ -124,175 +148,210 @@ fun MedicationFormContent(
                 ?.toMessageRes()?.let { stringResource(it) }
         )
 
-        MedTextField(
-            value = state.dosageAmount,
-            onValueChange = actions.onDosageAmountChange,
-            label = stringResource(R.string.medication_field_dosage_amount),
-            modifier = Modifier.fillMaxWidth(),
-            error = state.fieldErrors[MedicationField.DOSAGE]
-                ?.toMessageRes()?.let { stringResource(it) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
-        )
-
-        SimpleDropdown(
-            label = stringResource(R.string.medication_field_dosage_unit),
-            selectedLabel = state.dosageUnit.label(),
-            options = DosageUnit.entries.toList(),
-            optionLabel = { it.label() },
-            onSelected = actions.onDosageUnitChange
-        )
-
-        SimpleDropdown(
-            label = stringResource(R.string.medication_field_form),
-            selectedLabel = stringResource(state.form.toLabelRes()),
-            options = MedicationForm.entries.toList(),
-            optionLabel = { stringResource(it.toLabelRes()) },
-            onSelected = actions.onFormChange
-        )
-
-        HorizontalDivider()
-
-        Text(
-            text = stringResource(R.string.medication_frequency_section),
-            style = MaterialTheme.typography.titleMedium
-        )
-
-        SimpleDropdown(
-            label = stringResource(R.string.medication_field_frequency_type),
-            selectedLabel = stringResource(state.frequencyType.toLabelRes()),
-            options = FrequencyType.entries.toList(),
-            optionLabel = { stringResource(it.toLabelRes()) },
-            onSelected = actions.onFrequencyTypeChange
-        )
-
-        when (state.frequencyType) {
-            FrequencyType.DAILY,
-            FrequencyType.SPECIFIC_DAYS -> {
-                if (state.frequencyType == FrequencyType.SPECIFIC_DAYS) {
-                    DaysSelector(
-                        selectedDays = state.selectedDays,
-                        onToggleDay = actions.onToggleDay
+        FormSection(title = stringResource(R.string.medication_field_form)) {
+            FlowRow(
+                modifier = Modifier.selectableGroup(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                MedicationForm.entries.forEach { form ->
+                    MedFilterChip(
+                        label = stringResource(form.toLabelRes()),
+                        selected = state.form == form,
+                        onClick = { actions.onFormChange(form) }
                     )
-                    FieldErrorText(state.fieldErrors[MedicationField.DAYS]?.toMessageRes())
                 }
-
-                TimesEditor(
-                    times = state.times,
-                    onAddTime = actions.onAddTime,
-                    onRemoveTime = actions.onRemoveTime,
-                    onUpdateTimes = actions.onUpdateTimes
-                )
-                FieldErrorText(state.fieldErrors[MedicationField.TIMES]?.toMessageRes())
-            }
-
-            FrequencyType.EVERY_X_HOURS -> {
-                val intervals = Frequency.VALID_EVERY_X_HOURS_INTERVALS.sorted()
-
-                SimpleDropdown(
-                    label = stringResource(R.string.medication_field_interval),
-                    selectedLabel = pluralStringResource(
-                        R.plurals.medication_interval_hours,
-                        state.intervalHours,
-                        state.intervalHours
-                    ),
-                    options = intervals,
-                    optionLabel = {
-                        pluralStringResource(
-                            R.plurals.medication_interval_hours, it, it
-                        )
-                    },
-                    onSelected = actions.onIntervalHoursChange
-                )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = stringResource(
-                            R.string.medication_field_first_dose,
-                            state.firstTime.format(timeFormatter)
-                        )
-                    )
-
-                    OutlinedButton(
-                        onClick = {
-                            showTimePicker(context, state.firstTime) {
-                                actions.onFirstTimeChange(it)
-                            }
-                        }
-                    ) {
-                        Text(stringResource(R.string.medication_pick_time))
-                    }
-                }
-
-                FieldErrorText(state.fieldErrors[MedicationField.FREQUENCY]?.toMessageRes())
             }
         }
 
-        HorizontalDivider()
-
-        Text(
-            text = stringResource(R.string.medication_period_section),
-            style = MaterialTheme.typography.titleMedium
-        )
-
-        OutlinedButton(
-            enabled = startDateEditable,
-            onClick = {
-                showDatePicker(context, state.startDate) {
-                    actions.onStartDateChange(it)
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                stringResource(
-                    R.string.medication_start_date,
-                    state.startDate.format(dateFormatter)
+        FormSection(title = stringResource(R.string.medication_detail_dosage)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.Top
+            ) {
+                MedTextField(
+                    value = state.dosageAmount,
+                    onValueChange = actions.onDosageAmountChange,
+                    label = stringResource(R.string.medication_field_dosage_amount),
+                    modifier = Modifier.weight(1f),
+                    error = state.fieldErrors[MedicationField.DOSAGE]
+                        ?.toMessageRes()?.let { stringResource(it) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                 )
+
+                SimpleDropdown(
+                    label = stringResource(R.string.medication_field_dosage_unit),
+                    selectedLabel = state.dosageUnit.label(),
+                    options = DosageUnit.entries.toList(),
+                    optionLabel = { it.label() },
+                    onSelected = actions.onDosageUnitChange,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(top = 8.dp)
+                )
+            }
+
+            Text(
+                text = stringResource(R.string.medication_dosage_helper),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 
-        OutlinedButton(
-            onClick = {
-                showDatePicker(context, state.endDate ?: state.startDate) {
-                    actions.onEndDateChange(it)
+        FormSection(title = stringResource(R.string.medication_frequency_section)) {
+            Column(
+                modifier = Modifier.selectableGroup(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                FrequencyType.entries.forEach { type ->
+                    FrequencyOption(
+                        label = stringResource(type.toLabelRes()),
+                        selected = state.frequencyType == type,
+                        onClick = { actions.onFrequencyTypeChange(type) }
+                    )
                 }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
+            }
+
+            when (state.frequencyType) {
+                FrequencyType.DAILY,
+                FrequencyType.SPECIFIC_DAYS -> {
+                    if (state.frequencyType == FrequencyType.SPECIFIC_DAYS) {
+                        DaysSelector(
+                            selectedDays = state.selectedDays,
+                            onToggleDay = actions.onToggleDay
+                        )
+
+                        FieldErrorText(
+                            state.fieldErrors[MedicationField.DAYS]?.toMessageRes()
+                        )
+                    }
+
+                    TimesEditor(
+                        times = state.times,
+                        onAddTime = actions.onAddTime,
+                        onRemoveTime = actions.onRemoveTime,
+                        onUpdateTimes = actions.onUpdateTimes
+                    )
+
+                    FieldErrorText(
+                        state.fieldErrors[MedicationField.TIMES]?.toMessageRes()
+                    )
+                }
+
+                FrequencyType.EVERY_X_HOURS -> {
+                    val intervals = Frequency.VALID_EVERY_X_HOURS_INTERVALS.sorted()
+
+                    SimpleDropdown(
+                        label = stringResource(R.string.medication_field_interval),
+                        selectedLabel = pluralStringResource(
+                            R.plurals.medication_interval_hours,
+                            state.intervalHours,
+                            state.intervalHours
+                        ),
+                        options = intervals,
+                        optionLabel = {
+                            pluralStringResource(
+                                R.plurals.medication_interval_hours,
+                                it,
+                                it
+                            )
+                        },
+                        onSelected = actions.onIntervalHoursChange,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = stringResource(
+                                R.string.medication_field_first_dose,
+                                state.firstTime.format(timeFormatter)
+                            ),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+
+                        MedButton(
+                            text = stringResource(R.string.medication_pick_time),
+                            onClick = {
+                                showTimePicker(context, state.firstTime) {
+                                    actions.onFirstTimeChange(it)
+                                }
+                            },
+                            style = MedButtonStyle.Outlined,
+                            compact = true
+                        )
+                    }
+
+                    FieldErrorText(
+                        state.fieldErrors[MedicationField.FREQUENCY]?.toMessageRes()
+                    )
+                }
+            }
+        }
+
+        FormSection(title = stringResource(R.string.medication_period_section)) {
+            MedButton(
+                text = stringResource(
+                    R.string.medication_start_date,
+                    state.startDate.format(dateFormatter)
+                ),
+                onClick = {
+                    showDatePicker(context, state.startDate) {
+                        actions.onStartDateChange(it)
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(),
+                style = MedButtonStyle.Outlined,
+                enabled = startDateEditable
+            )
+
+            MedButton(
                 text = state.endDate?.let {
                     stringResource(
                         R.string.medication_end_date,
                         it.format(dateFormatter)
                     )
-                } ?: stringResource(R.string.medication_set_end_date)
+                } ?: stringResource(R.string.medication_set_end_date),
+                onClick = {
+                    showDatePicker(context, state.endDate ?: state.startDate) {
+                        actions.onEndDateChange(it)
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(),
+                style = MedButtonStyle.Outlined
             )
+
+            if (state.endDate != null) {
+                MedButton(
+                    text = stringResource(R.string.medication_remove_end_date),
+                    onClick = { actions.onEndDateChange(null) },
+                    modifier = Modifier.fillMaxWidth(),
+                    style = MedButtonStyle.Text
+                )
+            }
+
+            FieldErrorText(state.fieldErrors[MedicationField.DATES]?.toMessageRes())
         }
 
-        if (state.endDate != null) {
-            OutlinedButton(
-                onClick = { actions.onEndDateChange(null) },
-                modifier = Modifier.fillMaxWidth()
+        FormSection(title = stringResource(R.string.medication_field_color)) {
+            Row(
+                modifier = Modifier.selectableGroup(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Text(stringResource(R.string.medication_remove_end_date))
+                MedicationColor.entries.forEach { color ->
+                    ColorOption(
+                        color = color.toComposeColor(),
+                        name = stringResource(color.toLabelRes()),
+                        selected = state.color == color,
+                        onClick = { actions.onColorChange(color) }
+                    )
+                }
             }
         }
-
-        FieldErrorText(state.fieldErrors[MedicationField.DATES]?.toMessageRes())
-
-        HorizontalDivider()
-
-        SimpleDropdown(
-            label = stringResource(R.string.medication_field_color),
-            selectedLabel = stringResource(state.color.toLabelRes()),
-            options = MedicationColor.entries.toList(),
-            optionLabel = { stringResource(it.toLabelRes()) },
-            onSelected = actions.onColorChange
-        )
 
         MedTextField(
             value = state.notes,
@@ -305,9 +364,23 @@ fun MedicationFormContent(
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text(stringResource(R.string.medication_field_reminders))
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.medication_field_reminders),
+                    style = MaterialTheme.typography.titleSmall
+                )
+
+                Text(
+                    text = stringResource(R.string.medication_reminders_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
 
             Switch(
                 checked = state.remindersEnabled,
@@ -322,8 +395,76 @@ fun MedicationFormContent(
             onClick = actions.onSave,
             modifier = Modifier.fillMaxWidth(),
             enabled = !state.isSaving,
-            loading = state.isSaving
+            loading = state.isSaving,
+            icon = painterResource(R.drawable.ic_med_check)
         )
+    }
+}
+
+@Composable
+private fun FormSection(
+    title: String,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+
+        content()
+    }
+}
+
+@Composable
+private fun FrequencyOption(
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    val shape = MaterialTheme.shapes.medium
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(shape)
+            .selectable(
+                selected = selected,
+                onClick = onClick,
+                role = Role.RadioButton
+            ),
+        shape = shape,
+        color = if (selected) {
+            MaterialTheme.colorScheme.primaryContainer
+        } else {
+            MaterialTheme.colorScheme.surface
+        },
+        border = BorderStroke(
+            width = 1.dp,
+            color = if (selected) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.outlineVariant
+            }
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 52.dp)
+                .padding(horizontal = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            RadioButton(selected = selected, onClick = null)
+
+            Text(
+                text = label,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
     }
 }
 
@@ -332,24 +473,30 @@ private fun DaysSelector(
     selectedDays: Set<DayOfWeek>,
     onToggleDay: (DayOfWeek) -> Unit
 ) {
-    Column {
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(
             text = stringResource(R.string.medication_field_days),
-            style = MaterialTheme.typography.labelLarge
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
-        DayOfWeek.entries.forEach { day ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
-                    checked = day in selectedDays,
-                    onCheckedChange = { onToggleDay(day) }
+        Row(modifier = Modifier.fillMaxWidth()) {
+            DayOfWeek.entries.forEach { day ->
+                val name = stringResource(day.toLabelRes())
+
+                WeekdayChip(
+                    label = name.first().uppercase(),
+                    contentDescription = name,
+                    selected = day in selectedDays,
+                    onClick = { onToggleDay(day) },
+                    modifier = Modifier.weight(1f)
                 )
-                Text(stringResource(day.toLabelRes()))
             }
         }
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun TimesEditor(
     times: List<LocalTime>,
@@ -362,40 +509,94 @@ private fun TimesEditor(
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
             text = stringResource(R.string.medication_field_times),
-            style = MaterialTheme.typography.labelLarge
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
-        times.forEach { time ->
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            times.forEach { time ->
+                TimeChip(
                     text = time.format(timeFormatter),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedButton(
-                        onClick = {
-                            showTimePicker(context, time) { picked ->
-                                onUpdateTimes(times - time + picked)
-                            }
+                    onEdit = {
+                        showTimePicker(context, time) { picked ->
+                            onUpdateTimes(times - time + picked)
                         }
-                    ) {
-                        Text(stringResource(R.string.medication_change_time))
-                    }
+                    },
+                    onRemove = { onRemoveTime(time) }
+                )
+            }
 
-                    OutlinedButton(onClick = { onRemoveTime(time) }) {
-                        Text(stringResource(R.string.medication_remove_time))
-                    }
+            Surface(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .clickable(onClick = onAddTime),
+                shape = CircleShape,
+                color = MaterialTheme.colorScheme.surface,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_med_add),
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+
+                    Text(
+                        text = stringResource(R.string.medication_add_time),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
                 }
             }
         }
+    }
+}
 
-        OutlinedButton(onClick = onAddTime) {
-            Text(stringResource(R.string.medication_add_time))
+@Composable
+private fun TimeChip(
+    text: String,
+    onEdit: () -> Unit,
+    onRemove: () -> Unit
+) {
+    val editLabel = stringResource(R.string.medication_change_time)
+    val removeLabel = stringResource(R.string.medication_remove_time)
+
+    Surface(
+        shape = CircleShape,
+        color = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = text,
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .clickable(onClickLabel = editLabel, onClick = onEdit)
+                    .padding(start = 16.dp, end = 8.dp, top = 10.dp, bottom = 10.dp)
+            )
+
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(CircleShape)
+                    .clickable(onClickLabel = removeLabel, onClick = onRemove),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_close),
+                    contentDescription = removeLabel,
+                    modifier = Modifier.size(16.dp)
+                )
+            }
         }
     }
 }
@@ -417,18 +618,46 @@ private fun <T> SimpleDropdown(
     selectedLabel: String,
     options: List<T>,
     optionLabel: @Composable (T) -> String,
-    onSelected: (T) -> Unit
+    onSelected: (T) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
 
-    Column {
-        Text(label, style = MaterialTheme.typography.labelLarge)
-
-        OutlinedButton(
+    Box(modifier = modifier) {
+        Surface(
             onClick = { expanded = true },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.surface,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
         ) {
-            Text(selectedLabel)
+            Row(
+                modifier = Modifier
+                    .heightIn(min = 56.dp)
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = label,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+
+                    Text(
+                        text = selectedLabel,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+
+                Icon(
+                    painter = painterResource(R.drawable.ic_med_chevron_down),
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
 
         DropdownMenu(
@@ -449,7 +678,7 @@ private fun <T> SimpleDropdown(
 }
 
 private fun showTimePicker(
-    context: android.content.Context,
+    context: Context,
     initial: LocalTime,
     onPicked: (LocalTime) -> Unit
 ) {
@@ -463,7 +692,7 @@ private fun showTimePicker(
 }
 
 private fun showDatePicker(
-    context: android.content.Context,
+    context: Context,
     initial: LocalDate,
     onPicked: (LocalDate) -> Unit
 ) {
