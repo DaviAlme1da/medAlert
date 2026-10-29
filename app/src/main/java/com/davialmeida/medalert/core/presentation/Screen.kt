@@ -1,10 +1,10 @@
-
 package com.davialmeida.medalert.core.presentation
 
 const val PROFILE_ID_ARG = "profileId"
 const val MEDICATION_ID_ARG = "seriesId"
 
 enum class Screen(val route: String) {
+    ONBOARDING("onboarding"),
     MAIN("main"),
     TODAY("today"),
     MEDICATIONS("medications"),
