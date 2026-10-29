@@ -19,6 +19,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,6 +29,8 @@ import com.davialmeida.medalert.R
 import com.davialmeida.medalert.compose.theme.MedAlertTheme
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.time.format.TextStyle
 
 @Composable
@@ -49,7 +54,6 @@ fun WeekStrip(
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(
                 onClick = onPreviousWeek,
-                modifier = Modifier.size(40.dp),
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_med_chevron_left),
@@ -71,7 +75,6 @@ fun WeekStrip(
 
             IconButton(
                 onClick = onNextWeek,
-                modifier = Modifier.size(40.dp),
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_med_chevron_right),
@@ -83,12 +86,20 @@ fun WeekStrip(
 
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             days.forEach { date ->
+                val description = date.format(
+                    DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)
+                )
                 val isSelected = date == selected
                 val isToday = date == today
 
                 Surface(
                     onClick = { onSelect(date) },
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .semantics {
+                            contentDescription = description
+                            this.selected = isSelected
+                        },
                     shape = RoundedCornerShape(14.dp),
                     color = if (isSelected) {
                         MaterialTheme.colorScheme.primary
