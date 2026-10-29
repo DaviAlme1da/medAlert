@@ -1,4 +1,4 @@
-package com.davialmeida.medalert.today.data.respository
+package com.davialmeida.medalert.today.data.repository
 
 import androidx.room.withTransaction
 import com.davialmeida.medalert.core.database.AppDatabase
