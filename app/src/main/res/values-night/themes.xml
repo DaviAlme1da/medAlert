@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MedAlert" parent="android:Theme.Material.NoActionBar" />
+
+    <style name="Theme.MedAlert.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#11181E</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
+        <item name="windowSplashScreenIconBackgroundColor">#9CCCF0</item>
+        <item name="postSplashScreenTheme">@style/Theme.MedAlert</item>
+    </style>
+</resources>

@@ -27,6 +27,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
+
 
     kotlinOptions {
         jvmTarget = "17"
@@ -73,6 +77,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.core.splashscreen)
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.datastore.preferences)
