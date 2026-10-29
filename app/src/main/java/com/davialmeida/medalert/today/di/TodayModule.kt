@@ -1,6 +1,6 @@
 package com.davialmeida.medalert.today.di
 
-import com.davialmeida.medalert.today.data.respository.DoseLogRepositoryImpl
+import com.davialmeida.medalert.today.data.repository.DoseLogRepositoryImpl
 import com.davialmeida.medalert.today.domain.repository.DoseLogRepository
 import dagger.Binds
 import dagger.Module
