@@ -6,11 +6,8 @@
     <string name="status_taken">Tomada</string>
     <string name="status_skipped">Pulada</string>
     <string name="status_late">Atrasada</string>
-    <string name="next_dose">Próxima dose: %1$s</string>
     <string name="time">Horário</string>
     <string name="select_time">Selecionar horário</string>
-    <string name="empty_medications_title">Nenhum medicamento</string>
-    <string name="empty_medications_message">Você ainda não cadastrou nenhum medicamento.</string>
     <string name="nav_history">Histórico</string>
     <string name="nav_medications">Medicamentos</string>
     <string name="nav_settings">Ajustes</string>
@@ -37,9 +34,6 @@
     <string name="profile_delete_confirm">Excluir</string>
     <string name="profile_screen_title">Perfis</string>
     <string name="profile_add_button">Adicionar perfil</string>
-    <string name="profile_active">Perfil ativo</string>
-    <string name="profile_edit_button">Editar</string>
-    <string name="profile_delete_button">Excluir</string>
     <string name="profile_error_dismiss">Fechar</string>
     <string name="profile_default_name">Meu Perfil</string>
     <string name="profile_empty_message">Você ainda não tem perfis cadastrados. Adicione um perfil para começar.</string>
@@ -48,7 +42,6 @@
     <string name="startup_error">Não foi possível inicializar o aplicativo.</string>
     <string name="retry">Tentar novamente</string>
     <string name="navigation_back">Voltar</string>
-    <string name="settings_profiles">Perfis</string>
     <string name="profile_edit_description">Editar perfil %1$s</string>
     <string name="profile_delete_description">Excluir perfil %1$s</string>
     <string name="profile_delete_failed">Não foi possível excluir o perfil. Tente novamente.</string>
@@ -73,12 +66,10 @@
     <string name="weekday_sunday_short">dom</string>
     <string name="medications_tab_active">Ativos</string>
     <string name="medications_tab_paused">Pausados</string>
-    <string name="medications_empty_active">Nenhum medicamento ativo no momento.</string>
     <string name="medications_empty_paused">Nenhum medicamento pausado.</string>
     <string name="medication_detail_title">Detalhes do medicamento</string>
     <string name="medication_detail_load_error">Não foi possível carregar os detalhes deste medicamento.</string>
     <string name="medication_detail_dosage">Dosagem</string>
-    <string name="medication_detail_form">Forma</string>
     <string name="medication_detail_frequency">Frequência</string>
     <string name="medication_detail_start_date">Data de início</string>
     <string name="medication_detail_end_date">Data de término</string>
@@ -86,8 +77,6 @@
     <string name="medication_detail_reminders">Lembretes</string>
     <string name="medication_detail_notes">Observações</string>
     <string name="medication_detail_edit">Editar medicamento</string>
-    <string name="action_back">Voltar</string>
-    <string name="action_try_again">Tentar novamente</string>
     <string name="common_enabled">Ativados</string>
     <string name="common_disabled">Desativados</string>
     <string name="medication_form_tablet">Comprimido</string>
@@ -97,11 +86,7 @@
     <string name="medication_form_injection">Injeção</string>
     <string name="medication_form_ointment">Pomada</string>
     <string name="medication_form_other">Outro</string>
-    <string name="edit_medication_title">Editar medicamento</string>
-    <string name="edit_medication_series_id">ID da série: %1$d</string>
-    <string name="edit_medication_placeholder">A tela de edição será implementada na próxima etapa.</string>
     <string name="medication_edit_title">Editar medicamento</string>
-    <string name="medication_edit_load_error">Não foi possível carregar o medicamento.</string>
     <string name="medication_error_empty_name">Informe o nome do medicamento.</string>
     <string name="medication_error_name_too_long">O nome deve ter até 60 caracteres.</string>
     <string name="medication_error_invalid_dosage">Informe uma dose maior que zero.</string>
@@ -125,7 +110,6 @@
     <string name="medication_field_name">Nome do medicamento</string>
     <string name="medication_field_dosage_unit">Unidade da dose</string>
     <string name="medication_field_form">Forma do medicamento</string>
-    <string name="medication_field_frequency_type">Tipo de frequência</string>
     <string name="medication_field_days">Dias da semana</string>
     <string name="medication_field_times">Horários das doses</string>
     <string name="medication_field_interval">Intervalo</string>
@@ -167,7 +151,6 @@
     <string name="medication_weekday_friday">Sexta-feira</string>
     <string name="medication_weekday_saturday">Sábado</string>
     <string name="medication_weekday_sunday">Domingo</string>
-    <string name="medication_detail_status">Situação</string>
     <string name="medication_status_active">Em tratamento</string>
     <string name="medication_status_scheduled">Agendado</string>
     <string name="medication_status_paused">Pausado</string>
@@ -181,10 +164,7 @@
     <string name="medication_delete_dialog_message">Isso apaga o medicamento e TODO o histórico de doses dele. Essa ação não pode ser desfeita.</string>
     <string name="medication_delete_dialog_confirm">Excluir</string>
     <string name="medication_dialog_cancel">Cancelar</string>
-    <string name="today_progress_title">Progresso do dia</string>
-    <string name="today_progress_summary">%1$d de %2$d doses tomadas</string>
     <string name="today_progress_empty">Nenhuma dose programada para hoje</string>
-    <string name="dose_action_time">Horário: %1$s</string>
     <string name="dose_action_future_message">Esta dose ainda não está disponível para registro.</string>
     <string name="action_skip">Pular dose</string>
     <string name="action_undo">Desfazer registro</string>
@@ -195,8 +175,6 @@
     <string name="today_no_profile_selected">Nenhum perfil</string>
     <string name="today_no_profile_message">Cadastre um perfil para ver as doses.</string>
     <string name="today_load_error">Não foi possível carregar as doses.</string>
-    <string name="today_empty_day">Nenhuma dose programada para esta data.</string>
-    <string name="today_doses_today">Doses de hoje</string>
     <string name="today_doses_of_date">Doses de %1$s</string>
     <string name="today_manage_profiles">Gerenciar perfis</string>
     <string name="today_error_future_dose">Não é possível registrar uma dose futura.</string>
@@ -209,12 +187,6 @@
     <string name="reminder_notification_text">Dose: %1$s • Perfil: %2$s</string>
     <string name="reminder_action_taken">Tomei</string>
     <string name="reminder_action_skipped">Pular</string>
-    <string name="reminder_permission_title">Configure seus lembretes</string>
-    <string name="reminder_permission_message_both">Ative as notificações e os alarmes exatos para receber seus lembretes.</string>
-    <string name="reminder_permission_message_notifications">Ative as notificações para receber os lembretes dos medicamentos.</string>
-    <string name="reminder_permission_message_exact">Permita alarmes exatos para melhorar a pontualidade dos lembretes.</string>
-    <string name="reminder_permission_action_notifications">Ativar notificações</string>
-    <string name="reminder_permission_action_exact">Configurar alarmes</string>
     <string name="history_adherence_title">Adesão ao tratamento</string>
     <string name="history_adherence_percentage">%1$d%% de adesão</string>
     <string name="history_adherence_empty">Sem doses registradas</string>
@@ -225,7 +197,6 @@
     <string name="history_empty">Nenhuma dose encontrada neste período.</string>
     <string name="reminder_action_snooze">Adiar</string>
     <string name="onboarding_skip">Pular</string>
-    <string name="onboarding_back">Voltar</string>
     <string name="onboarding_next">Continuar</string>
     <string name="onboarding_start">Começar</string>
     <string name="settings_save_error">Não foi possível salvar a configuração.</string>
@@ -234,16 +205,12 @@
     <string name="settings_section_reminders">Lembretes</string>
     <string name="settings_notifications">Notificações</string>
     <string name="settings_exact_alarms">Alarmes exatos</string>
-    <string name="settings_permission_allowed">Permitido</string>
-    <string name="settings_permission_denied">Desativado. Toque para ativar.</string>
     <string name="settings_snooze_title">Tempo para adiar</string>
     <plurals name="settings_snooze_minutes">
         <item quantity="one">%d minuto</item>
         <item quantity="other">%d minutos</item>
     </plurals>
     <string name="settings_section_appearance">Aparência</string>
-    <string name="settings_theme_title">Tema</string>
-    <string name="settings_theme_system">Seguir o sistema</string>
     <string name="settings_theme_light">Claro</string>
     <string name="settings_theme_dark">Escuro</string>
     <string name="settings_section_about">Sobre</string>
