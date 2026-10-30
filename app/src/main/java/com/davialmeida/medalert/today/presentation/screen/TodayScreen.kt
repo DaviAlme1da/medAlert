@@ -51,7 +51,6 @@ import com.davialmeida.medalert.medication.presentation.extension.toComposeColor
 import com.davialmeida.medalert.medication.presentation.extension.toDisplayText
 import com.davialmeida.medalert.profile.domain.model.Profile
 import com.davialmeida.medalert.profile.presentation.extension.toComposeColor
-import com.davialmeida.medalert.reminder.presentation.component.ReminderPermissionRequester
 import com.davialmeida.medalert.reminder.presentation.viewmodel.ReminderPermissionViewModel
 import com.davialmeida.medalert.today.presentation.extension.toTodayMessageRes
 import com.davialmeida.medalert.today.presentation.viewmodel.TodayViewModel
@@ -73,7 +72,6 @@ fun TodayScreen(
     permissionViewModel: ReminderPermissionViewModel = hiltViewModel(),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    val permissionStatus by permissionViewModel.status.collectAsStateWithLifecycle()
 
     var selectedDoseKey by rememberSaveable {
         mutableStateOf<String?>(null)
@@ -87,236 +85,230 @@ fun TodayScreen(
         permissionViewModel.refresh()
     }
 
-    ReminderPermissionRequester(
-        status = permissionStatus,
-        onPermissionResult = permissionViewModel::refresh,
-    ) { requestPermission ->
+    Column(modifier = modifier.fillMaxSize()) {
 
-        Column(modifier = modifier.fillMaxSize()) {
-
-            // Faixa branca: perfil + semana
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.surface,
+        // Faixa branca: perfil + semana
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            color = MaterialTheme.colorScheme.surface,
+        ) {
+            Column(
+                modifier = Modifier.padding(
+                    horizontal = 16.dp,
+                    vertical = 12.dp,
+                ),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Column(
-                    modifier = Modifier.padding(
-                        horizontal = 16.dp,
-                        vertical = 12.dp,
-                    ),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    ProfileSwitcher(
-                        profiles = state.profiles,
-                        activeProfile = state.activeProfile,
-                        onSelectProfile = viewModel::selectProfile,
-                        onManageProfiles = onOpenProfiles,
-                    )
+                ProfileSwitcher(
+                    profiles = state.profiles,
+                    activeProfile = state.activeProfile,
+                    onSelectProfile = viewModel::selectProfile,
+                    onManageProfiles = onOpenProfiles,
+                )
 
-                    WeekStrip(
-                        days = state.weekDays,
-                        selected = state.selectedDate,
-                        today = state.today,
-                        onSelect = viewModel::selectDate,
-                        onPreviousWeek = viewModel::previousWeek,
-                        onNextWeek = viewModel::nextWeek,
+                WeekStrip(
+                    days = state.weekDays,
+                    selected = state.selectedDate,
+                    today = state.today,
+                    onSelect = viewModel::selectDate,
+                    onPreviousWeek = viewModel::previousWeek,
+                    onNextWeek = viewModel::nextWeek,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+        }
+
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+
+
+            item {
+                Text(
+                    text = if (state.selectedDate == state.today) {
+                        stringResource(R.string.today_screen_title)
+                    } else {
+                        stringResource(
+                            R.string.today_doses_of_date,
+                            state.selectedDate.format(dateFormatter),
+                        )
+                    },
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+            }
+
+            state.actionError?.let { error ->
+                item {
+                    Row(
                         modifier = Modifier.fillMaxWidth(),
-                    )
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = stringResource(error.toTodayMessageRes()),
+                            modifier = Modifier.weight(1f),
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+
+                        TextButton(
+                            onClick = viewModel::clearActionError,
+                        ) {
+                            Text(stringResource(R.string.today_error_dismiss))
+                        }
+                    }
                 }
             }
 
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-
-
-                item {
-                    Text(
-                        text = if (state.selectedDate == state.today) {
-                            stringResource(R.string.today_screen_title)
-                        } else {
-                            stringResource(
-                                R.string.today_doses_of_date,
-                                state.selectedDate.format(dateFormatter),
-                            )
-                        },
-                        style = MaterialTheme.typography.headlineSmall,
-                        color = MaterialTheme.colorScheme.onBackground,
-                    )
+            when {
+                state.isLoading -> {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 32.dp),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
                 }
 
-                state.actionError?.let { error ->
+                state.hasLoadError -> {
                     item {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Text(
-                                text = stringResource(error.toTodayMessageRes()),
+                                text = stringResource(R.string.today_load_error),
                                 modifier = Modifier.weight(1f),
                                 color = MaterialTheme.colorScheme.error,
-                                style = MaterialTheme.typography.bodyMedium,
                             )
 
-                            TextButton(
-                                onClick = viewModel::clearActionError,
-                            ) {
-                                Text(stringResource(R.string.today_error_dismiss))
+                            TextButton(onClick = viewModel::retry) {
+                                Text(stringResource(R.string.retry))
                             }
                         }
                     }
                 }
 
-                when {
-                    state.isLoading -> {
-                        item {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 32.dp),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                CircularProgressIndicator()
-                            }
-                        }
+                state.activeProfile == null -> {
+                    item {
+                        Text(
+                            text = stringResource(
+                                R.string.today_no_profile_message
+                            ),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+
+                state.items.isEmpty() -> {
+                    item {
+                        EmptyDayCard(
+                            onAddMedication = onAddMedication,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    }
+                }
+
+                else -> {
+                    item {
+                        ProgressCard(
+                            taken = state.progress.taken,
+                            total = state.progress.total,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
                     }
 
-                    state.hasLoadError -> {
-                        item {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.today_load_error),
-                                    modifier = Modifier.weight(1f),
-                                    color = MaterialTheme.colorScheme.error,
-                                )
+                    val groups = state.items.groupBy { it.time }
 
-                                TextButton(onClick = viewModel::retry) {
-                                    Text(stringResource(R.string.retry))
-                                }
-                            }
-                        }
-                    }
-
-                    state.activeProfile == null -> {
-                        item {
+                    groups.forEach { (time, doses) ->
+                        item(key = "header-$time") {
                             Text(
-                                text = stringResource(
-                                    R.string.today_no_profile_message
-                                ),
-                                style = MaterialTheme.typography.bodyLarge,
+                                text = time.format(timeFormatter),
+                                style = MaterialTheme.typography.labelLarge,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.padding(top = 4.dp),
                             )
                         }
-                    }
 
-                    state.items.isEmpty() -> {
-                        item {
-                            EmptyDayCard(
-                                onAddMedication = onAddMedication,
+                        items(
+                            items = doses,
+                            key = { it.key },
+                        ) { dose ->
+                            DoseCard(
+                                name = dose.name,
+                                dosage = dose.dosage.toDisplayText(),
+                                time = dose.time.format(timeFormatter),
+                                showTime = false,
+                                status = dose.status,
+                                dotColor = dose.color.toComposeColor(),
                                 modifier = Modifier.fillMaxWidth(),
+                                onClick = {
+                                    selectedDoseKey = dose.key
+                                },
+                                onTakeClick = if (
+                                    dose.status == DoseStatusUi.Pending &&
+                                    dose.canAct
+                                ) {
+                                    {
+                                        viewModel.markTaken(
+                                            dose.medicationId,
+                                            dose.scheduledDateTime,
+                                        )
+                                    }
+                                } else {
+                                    null
+                                },
                             )
-                        }
-                    }
-
-                    else -> {
-                        item {
-                            ProgressCard(
-                                taken = state.progress.taken,
-                                total = state.progress.total,
-                                modifier = Modifier.fillMaxWidth(),
-                            )
-                        }
-
-                        val groups = state.items.groupBy { it.time }
-
-                        groups.forEach { (time, doses) ->
-                            item(key = "header-$time") {
-                                Text(
-                                    text = time.format(timeFormatter),
-                                    style = MaterialTheme.typography.labelLarge,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(top = 4.dp),
-                                )
-                            }
-
-                            items(
-                                items = doses,
-                                key = { it.key },
-                            ) { dose ->
-                                DoseCard(
-                                    name = dose.name,
-                                    dosage = dose.dosage.toDisplayText(),
-                                    time = dose.time.format(timeFormatter),
-                                    showTime = false,
-                                    status = dose.status,
-                                    dotColor = dose.color.toComposeColor(),
-                                    modifier = Modifier.fillMaxWidth(),
-                                    onClick = {
-                                        selectedDoseKey = dose.key
-                                    },
-                                    onTakeClick = if (
-                                        dose.status == DoseStatusUi.Pending &&
-                                        dose.canAct
-                                    ) {
-                                        {
-                                            viewModel.markTaken(
-                                                dose.medicationId,
-                                                dose.scheduledDateTime,
-                                            )
-                                        }
-                                    } else {
-                                        null
-                                    },
-                                )
-                            }
                         }
                     }
                 }
             }
         }
+    }
 
-        selectedDose?.let { dose ->
-            DoseActionSheet(
-                medicationName = dose.name,
-                time = dose.time.format(timeFormatter),
-                subtitle = dose.dosage.toDisplayText(),
-                canAct = dose.canAct,
-                hasLog = dose.hasLog,
-                onMarkTaken = {
-                    viewModel.markTaken(
-                        dose.medicationId,
-                        dose.scheduledDateTime,
-                    )
-                    selectedDoseKey = null
-                },
-                onSkip = {
-                    viewModel.markSkipped(
-                        dose.medicationId,
-                        dose.scheduledDateTime,
-                    )
-                    selectedDoseKey = null
-                },
-                onUndo = {
-                    viewModel.undo(
-                        dose.medicationId,
-                        dose.scheduledDateTime,
-                    )
-                    selectedDoseKey = null
-                },
-                onDismiss = {
-                    selectedDoseKey = null
-                },
-            )
-        }
+    selectedDose?.let { dose ->
+        DoseActionSheet(
+            medicationName = dose.name,
+            time = dose.time.format(timeFormatter),
+            subtitle = dose.dosage.toDisplayText(),
+            canAct = dose.canAct,
+            hasLog = dose.hasLog,
+            onMarkTaken = {
+                viewModel.markTaken(
+                    dose.medicationId,
+                    dose.scheduledDateTime,
+                )
+                selectedDoseKey = null
+            },
+            onSkip = {
+                viewModel.markSkipped(
+                    dose.medicationId,
+                    dose.scheduledDateTime,
+                )
+                selectedDoseKey = null
+            },
+            onUndo = {
+                viewModel.undo(
+                    dose.medicationId,
+                    dose.scheduledDateTime,
+                )
+                selectedDoseKey = null
+            },
+            onDismiss = {
+                selectedDoseKey = null
+            },
+        )
     }
 }
 
