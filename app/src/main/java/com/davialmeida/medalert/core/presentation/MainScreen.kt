@@ -2,9 +2,6 @@ package com.davialmeida.medalert.core.presentation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -18,8 +15,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -27,8 +22,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.davialmeida.medalert.R
-import com.davialmeida.medalert.compose.component.MedButton
-import com.davialmeida.medalert.compose.theme.MedAlertTheme
 import com.davialmeida.medalert.history.presentation.screen.HistoryScreen
 import com.davialmeida.medalert.medication.presentation.screen.MedicationsScreen
 import com.davialmeida.medalert.settings.presentation.screen.SettingsScreen
@@ -152,38 +145,3 @@ private data class BottomBarItem(
     @StringRes val labelRes: Int,
     @DrawableRes val iconRes: Int,
 )
-
-
-@Preview(showBackground = true)
-@Composable
-private fun MainScreenPreview() {
-    MedAlertTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Text(
-                text = "MedAlert",
-                style = MaterialTheme.typography.headlineMedium
-            )
-
-            Text(
-                text = "Hoje",
-                style = MaterialTheme.typography.titleMedium
-            )
-
-            Text(
-                text = "Seus horários de medicamentos aparecerão aqui.",
-                style = MaterialTheme.typography.bodyMedium
-            )
-
-            MedButton(
-                text = "Ver medicamentos",
-                onClick = {}
-            )
-        }
-    }
-}
-
