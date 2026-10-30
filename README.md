@@ -111,13 +111,11 @@ Cada funcionalidade segue as camadas `presentation → domain ← data`:
 
 ---
 
-## Design e acessibilidade
+## Design
 
 - Interface construída a partir de um protótipo no Figma, com tokens de cor, tipografia (Inter) e formas centralizados em `compose/theme`.
 - Tema claro e escuro, com cores de status próprias para cada um.
 - Contraste de texto verificado para o nível AA (4,5:1) nos dois temas.
-- Descrições para leitores de tela (TalkBack) nos ícones, estados de seleção nos chips e dias da semana, e alvos de toque de 48dp.
-- Splash screen nativa, sem *flash* de tema na abertura.
 
 ---
 
