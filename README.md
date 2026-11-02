@@ -130,7 +130,6 @@ Cada funcionalidade segue as camadas `presentation → domain ← data`:
 | Assíncrono | Coroutines e Flow |
 | Lembretes | AlarmManager (alarmes exatos), `BroadcastReceiver` e notificações com ações |
 | Testes | JUnit, `kotlinx-coroutines-test` e fakes |
-| Integração contínua | GitHub Actions |
 
 ---
 
@@ -152,7 +151,7 @@ Pela linha de comando: `./gradlew assembleDebug`
 
 ## Testes
 
-Os testes cobrem casos de uso, regras de domínio, validadores, ViewModels e a camada de dados. Os unitários usam fakes e `kotlinx-coroutines-test`; os instrumentados verificam o banco Room e os repositórios. A integração contínua roda no GitHub Actions.
+Os testes cobrem casos de uso, regras de domínio, validadores, ViewModels e a camada de dados. Os unitários usam fakes e `kotlinx-coroutines-test`; os instrumentados verificam o banco Room e os repositórios.
 
 ```bash
 ./gradlew test                 # testes unitários
